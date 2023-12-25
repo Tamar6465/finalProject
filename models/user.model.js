@@ -28,7 +28,7 @@ const userSchema = new Schema({
     
     disabled: {
         type: String,
-        enum: ["Visual", "Hearing", "Motor", "MentalHealth"],
+        enum: ["visual", "hearing", "motor", "mentalHealth"],
         required: true
     }
 

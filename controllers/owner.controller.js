@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const Joi = require("joi");
 const { Owner } = require("../models/owner.model");
+const { generateToken } = require("../utils/jwt");
 
 const ownerJoiSchema = {
     login: Joi.object().keys({
@@ -15,8 +16,8 @@ const ownerJoiSchema = {
     })
 };
 const checkIfOwnerExists = async (email) => {
-    const user = await Owner.findOne({ email });
-    if (user) return user;
+    const owner = await Owner.findOne({ email });
+    if (owner) return owner;
     return false;
 }
 exports.register = async (req, res, next) => {
@@ -32,12 +33,12 @@ exports.register = async (req, res, next) => {
         const hash = await bcrypt.hash(body.password, 10);
         body.password = hash;
        
-        const newOwner = new User(body);
+        const newOwner = new Owner(body);
         await newOwner.save();
 
         //* generate token
         
-        return res.status(201).send(newUser);
+        return res.status(201).send(newOwner);
     } catch (error) {
         next(error);
     }
@@ -49,13 +50,12 @@ exports.login = async (req, res, next) => {
         if (validate.error) {
             throw Error(validate.error);
         }
-
         const owner = await checkIfOwnerExists(body.email);
         if (!owner || ! await bcrypt.compare(body.password, user.password)) {
             throw new Error('Password or email not valid');
         }
-        // const token = generateToken(user);
-        return res.send( user );
+        const token = generateToken(owner);
+        return res.send(token);       
     } catch (error) {
         next(error);
     }

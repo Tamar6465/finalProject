@@ -12,7 +12,7 @@ const userJoiSchema = {
         password: Joi.string().max(20).required(),
         email: Joi.string().email({ tlds: { allow: ['com'] } }).error(() => Error('Email is not valid')).required(),
         name: Joi.string().required(),
-        disabled:Joi.string()
+        disabled: Joi.string()
     })
 };
 const checkIfUserExists = async (email) => {
@@ -32,12 +32,12 @@ exports.register = async (req, res, next) => {
         };
         const hash = await bcrypt.hash(body.password, 10);
         body.password = hash;
-       
+
         const newUser = new User(body);
         await newUser.save();
 
         //* generate token
-        
+
         return res.status(201).send(newUser);
     } catch (error) {
         next(error);
@@ -56,8 +56,25 @@ exports.login = async (req, res, next) => {
             throw new Error('Password or email not valid');
         }
         const token = generateToken(user);
-        return res.send( token );
+        return res.send(token);
     } catch (error) {
         next(error);
     }
+};
+exports.getUsers = async (req, res, next) => {
+    const users = await User.find({});
+    if (!users) return next(new AppError(400, "users not exist"));
+    res.status(200).json({
+        status: "success",
+        users,
+    });
+};
+exports.getUser = async (req, res, next) => {
+    const {id}=req.params;
+    const user = await User.find({id:id});
+    if (!user) return next(new AppError(400, "users not exist"));
+    res.status(200).json({
+        status: "success",
+        user,
+    });
 };
