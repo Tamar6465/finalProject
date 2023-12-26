@@ -13,6 +13,7 @@ const ownerJoiSchema = {
         email: Joi.string().email({ tlds: { allow: ['com'] } }).error(() => Error('Email is not valid')).required(),
         name: Joi.string().required(),
         roles:Joi.string(),
+        phone:Joi.string().required()
     })
 };
 const checkIfOwnerExists = async (email) => {

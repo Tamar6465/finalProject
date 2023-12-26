@@ -12,7 +12,9 @@ const resortJoiSchema = {
         accessibility: Joi.string().required(),
         price: Joi.number().required(),
         category: Joi.string().required(),
-        placeId:Joi.string().required()
+        placeId:Joi.string().required(),
+        numBed:Joi.string().required()
+
     }),
     update: Joi.object().keys({
         name: Joi.string(),
@@ -22,7 +24,8 @@ const resortJoiSchema = {
         accessibility: Joi.string(),
         price: Joi.number(),
         category: Joi.string(),
-        placeId:Joi.string()
+        placeId:Joi.string(),
+        numBed:Joi.string()
 
     })
 };

@@ -11,6 +11,7 @@ const userJoiSchema = {
     register: Joi.object().keys({
         password: Joi.string().max(20).required(),
         email: Joi.string().email({ tlds: { allow: ['com'] } }).error(() => Error('Email is not valid')).required(),
+        phone:Joi.string().required(),
         name: Joi.string().required(),
         disabled: Joi.string()
     })

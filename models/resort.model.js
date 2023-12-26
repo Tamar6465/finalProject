@@ -18,9 +18,9 @@ const resortSchema = new Schema({
         type: String,
         required: true
     },
-    placeId:{
-        type:String,
-        required:true
+    placeId: {
+        type: String,
+        required: true
     },
     accessibility: {
         type: String,
@@ -43,6 +43,10 @@ const resortSchema = new Schema({
     category: {
         type: String,
         enum: ["vila", "b&b", "hotelRoom"],
+        required: true
+    },
+    numBed: {
+        type: Number,
         required: true
     },
     ownerId: {

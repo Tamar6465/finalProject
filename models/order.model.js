@@ -1,9 +1,9 @@
 const { string } = require("joi");
-const { Schema, model } = require("mongoose");
+const { Schema, model, default: mongoose } = require("mongoose");
 
 const orderSchema = new Schema({
     id: {
-        type: string,
+        type: String,
         required: false
     },
     dateOrder:{
@@ -22,9 +22,9 @@ const orderSchema = new Schema({
         type:Number,
         required:true
     },
-    ownerId: {
+    resortId: {
         type: mongoose.Types.ObjectId,
-        ref: "Owner",
+        ref: "Resort",
         required: true
     },
     userId:{
@@ -38,5 +38,5 @@ orderSchema.pre("save", function (next) {
     next();
 });
 
-const Order = model("Owner", orderSchema);
+const Order = model("Order", orderSchema);
 module.exports.Order = Order;
