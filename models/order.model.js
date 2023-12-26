@@ -32,4 +32,11 @@ const orderSchema = new Schema({
         ref: "User",
         required: true
     }
-})
+});
+orderSchema.pre("save", function (next) {
+    this.id = String(this._id);
+    next();
+});
+
+const Order = model("Owner", orderSchema);
+module.exports.Order = Order;

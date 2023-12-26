@@ -1,10 +1,10 @@
+const { string } = require("joi");
 const { Schema, model, default: mongoose } = require("mongoose");
 
 const resortSchema = new Schema({
     id: {
         type: String,
         required: false
-
     },
     name: {
         type: String,
@@ -14,29 +14,41 @@ const resortSchema = new Schema({
         type: String,
         required: true
     },
-    city:{
+    city: {
         type: String,
         required: true
     },
-    accessibility:{
+    placeId:{
+        type:String,
+        required:true
+    },
+    accessibility: {
         type: String,
         enum: ["visual", "hearing", "motor", "mentalHealth"],
         required: true
     },
-    images:{
-        type:[],
-        required:false
+    description: {
+        type: String,
+        required: false
     },
-    price:{
-        type:Number,
-        required:true
+    images: {
+        type: [],
+        required: false
+    },
+    price: {
+        type: Number,
+        required: true
 
+    },
+    category: {
+        type: String,
+        enum: ["vila", "b&b", "hotelRoom"],
+        required: true
     },
     ownerId: {
         type: mongoose.Types.ObjectId,
         ref: "Owner",
         required: true
-
     }
 })
 resortSchema.pre("save", function (next) {
