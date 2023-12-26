@@ -24,8 +24,13 @@ const resortSchema = new Schema({
         required: true
     },
     images:{
-        type:Array,
+        type:[],
         required:false
+    },
+    price:{
+        type:Number,
+        required:true
+
     },
     ownerId: {
         type: mongoose.Types.ObjectId,

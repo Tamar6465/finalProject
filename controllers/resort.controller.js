@@ -9,14 +9,17 @@ const resortJoiSchema = {
         adress: Joi.string().required(),
         city: Joi.string().required(),
         ownerId:Joi.string().required(),
-        accessibility: Joi.string().required()
+        accessibility: Joi.string().required(),
+        price: Joi.number().required()
     }),
     update: Joi.object().keys({
         name: Joi.string(),
         adress: Joi.string(),
         city: Joi.string(),
         ownerId:Joi.string(),
-        accessibility: Joi.string()
+        accessibility: Joi.string(),
+        price: Joi.number().required()
+
     })
 };
 exports.addResort = async (req, res, next) => {
