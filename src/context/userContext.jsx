@@ -1,10 +1,11 @@
-import { createContext, useState } from "react";
-// import axios from ("axios")
-
+import { createContext, useReducer, useState } from "react";
+ import axios from "axios"
+import userReduces from "./reduces/user.reduces"
 const userContext = createContext();
 const Provider = ({ children }) => {
-    const [users, setUsers] = useState([]);
-    const [userLogin, setUserLogin] = useState({});
+    const baseURL = "http://localhost:8200/accessiableHeaven/api/v1/";
+    const [users, dispach] = useReducer(userReduces, []);
+    const [userLogin, setUserLogin] = useState(null);
 
     const shared = {setUserLogin}
     return (

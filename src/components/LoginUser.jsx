@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react'
 import { userContext } from '../context/userContext'
 import { loginUser } from '../APICalls/user.API'
+import { useNavigate } from 'react-router-dom'
 
 export default function LoginUser() {
-    const { userLogin } = useContext(userContext)
+    const { setUserLogin } = useContext(userContext)
+    const navigate = useNavigate()
     const [data, setData] = useState({
         email: '',
         password: '',
@@ -18,6 +20,13 @@ export default function LoginUser() {
     const login = async (e) => {
         e.preventDefault();
         setUserLogin(loginUser(data));
+        navigate('/listResort')
+    }
+
+    const signUp = async (e) => {
+        e.preventDefault();
+
+        navigate('/signUpUser')
     }
 
 
@@ -40,6 +49,7 @@ export default function LoginUser() {
                         onChange={event => handleInputs(event)}
                     />
                     <button className="btn btn-secondary btn-lg btn-block text-info m-3" onClick={login}>Log In User</button>
+                    <button className="btn btn-secondary btn-lg btn-block text-info m-3" onClick={signUp}>Sign Up User</button>
                 </div>
             </div>
         </div>

@@ -1,14 +1,17 @@
 import React, { useContext, useState } from 'react'
 import { userContext } from '../context/userContext'
 import { registerUser } from '../APICalls/user.API'
+import { useNavigate } from 'react-router-dom'
 
 export default function SignUpUser() {
-    const { userLogin } = useContext(userContext)
+    const { setUserLogin } = useContext(userContext)
+    const navigate=useNavigate()
     const [data, setData] = useState({
         email: '',
         password: '',
         name: '',
-        disabled: ''
+        disabled: '',
+        phone:''
     })
 
     const handleInputs = (event) => {
@@ -20,6 +23,7 @@ export default function SignUpUser() {
     const signUp = async (e) => {
         e.preventDefault();
         setUserLogin(registerUser(data));
+        navigate('/listResort')
     }
 
 
@@ -45,6 +49,13 @@ export default function SignUpUser() {
                         placeholder="Name"
                         name="name"
                         type="text"
+                        className="input-fields list-group-item m-3"
+                        onChange={event => handleInputs(event)}
+                    />
+                    <input
+                        placeholder="Phone"
+                        name="phone"
+                        type="tel"
                         className="input-fields list-group-item m-3"
                         onChange={event => handleInputs(event)}
                     />
