@@ -1,12 +1,15 @@
 const express = require("express");
-const { addOrder, updateOrder, deleteOrder, getAll, getOrder } = require("../controllers/order.controller");
+const { addOrder, updateOrder, deleteOrder, getAll, getOrder, dateToken, getOrderByUserId } = require("../controllers/order.controller");
+const { auth } = require("../middlewares/auth");
 const router = express.Router();
 
-router.post("/addOrder", addOrder);
-router.put("/updateOrder/:id", updateOrder);
-router.delete("/deleteOrder/:id", deleteOrder);
+router.post("/addOrder",auth, addOrder);
+router.put("/updateOrder/:id",auth, updateOrder);
+router.delete("/deleteOrder/:id",auth, deleteOrder);
 router.get("/getAll", getAll);
 router.get("/getOrder/:id", getOrder);
+router.get("/getOrderByUserId/:userId",auth, getOrderByUserId);
+router.get("/dateTokan/:resortId",dateToken);
 
 
 module.exports = router;

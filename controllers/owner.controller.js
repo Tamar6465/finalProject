@@ -52,7 +52,7 @@ exports.login = async (req, res, next) => {
             throw Error(validate.error);
         }
         const owner = await checkIfOwnerExists(body.email);
-        if (!owner || ! await bcrypt.compare(body.password, user.password)) {
+        if (!owner || ! await bcrypt.compare(body.password, owner.password)) {
             throw new Error('Password or email not valid');
         }
         const token = generateToken(owner);
@@ -60,4 +60,62 @@ exports.login = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
+};
+exports.getOwners = async (req, res, next) => {
+    try {
+        if(req.type=="owner"&&req.user?.roles=="admin"){
+        const owners = await Owner.find({});
+        if (!owners) return next(new AppError(400, "owners not exist"));
+        res.status(200).json({
+            status: "success",
+            owners,
+        });}
+    } catch (error) {
+        next(error)
+    }
+
+};
+exports.updateOwner=async(req,res,next)=>{
+    try {
+        const {body}=req;
+        const { id } = req.params;
+        const owner = await Owner.updateOne({ id: id },body);
+        if (!owner) return next(new AppError(400, "owners not exist"));
+        res.status(200).json({
+            status: "success",
+            owner,
+        });
+    } catch (error) {
+        next(error)
+    }
+}
+exports.deleteOwner=async(req,res,next)=>{
+    try {
+        const { id } = req.params;
+        const owner = await Owner.deleteOne({ id: id });
+        if (!owner) return next(new AppError(400, "owners not exist"));
+        res.status(200).json({
+            status: "success",
+            owner,
+        });
+    } catch (error) {
+        next(error)
+    }
+}
+exports.getOwner = async (req, res, next) => {
+    try {
+        if(req.type=="owner"&&req.user.roles=="admin"){
+            const { id } = req.params;
+            const owner = await Owner.find({ id: id });
+            if (!owner) return next(new AppError(400, "owners not exist"));
+            res.status(200).json({
+                status: "success",
+                owner,
+            }); 
+        }
+     
+    } catch (error) {
+        next(error)
+    }
+ 
 };

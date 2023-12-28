@@ -28,7 +28,7 @@ const ownerSchema = new Schema({
         enum: ["admin", "user"],
         default: "user",
         required: true
-    },
+    }
 });
 ownerSchema.pre("save", function (next) {
     this.id = String(this._id);

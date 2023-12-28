@@ -11,7 +11,7 @@ const userJoiSchema = {
     register: Joi.object().keys({
         password: Joi.string().max(20).required(),
         email: Joi.string().email({ tlds: { allow: ['com'] } }).error(() => Error('Email is not valid')).required(),
-        phone:Joi.string().required(),
+        phone: Joi.string().required(),
         name: Joi.string().required(),
         disabled: Joi.string()
     })
@@ -63,19 +63,60 @@ exports.login = async (req, res, next) => {
     }
 };
 exports.getUsers = async (req, res, next) => {
-    const users = await User.find({});
-    if (!users) return next(new AppError(400, "users not exist"));
-    res.status(200).json({
-        status: "success",
-        users,
-    });
+    try {
+        if(req.type=="owner"&&req.user?.roles=="admin"){
+        const users = await User.find({});
+        if (!users) return next(new AppError(400, "users not exist"));
+        res.status(200).json({
+            status: "success",
+            users,
+        });}
+    } catch (error) {
+        next(error)
+    }
+
 };
+exports.updateUser=async(req,res,next)=>{
+    try {
+        const {body}=req;
+        const { id } = req.params;
+        const user = await User.updateOne({ id: id },body);
+        if (!user) return next(new AppError(400, "users not exist"));
+        res.status(200).json({
+            status: "success",
+            user,
+        });
+    } catch (error) {
+        next(error)
+    }
+}
+exports.deleteUser=async(req,res,next)=>{
+    try {
+        const { id } = req.params;
+        const user = await User.deleteOne({ id: id });
+        if (!user) return next(new AppError(400, "users not exist"));
+        res.status(200).json({
+            status: "success",
+            user,
+        });
+    } catch (error) {
+        next(error)
+    }
+}
 exports.getUser = async (req, res, next) => {
-    const {id}=req.params;
-    const user = await User.find({id:id});
-    if (!user) return next(new AppError(400, "users not exist"));
-    res.status(200).json({
-        status: "success",
-        user,
-    });
+    try {
+        if (req.user.roles=="admin") {
+            const { id } = req.params;
+            const user = await User.find({ id: id });
+            if (!user) return next(new AppError(400, "users not exist"));
+            res.status(200).json({
+                status: "success",
+                user,
+            }); 
+        }
+     
+    } catch (error) {
+        next(error)
+    }
+ 
 };

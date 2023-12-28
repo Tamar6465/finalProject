@@ -1,4 +1,3 @@
-const bcrypt = require("bcryptjs");
 const Joi = require("joi");
 const { Order } = require("../models/order.model");
 const { Types } = require("mongoose");
@@ -22,6 +21,34 @@ const orderJoiSchema = {
         }),
 };
 
+
+// Function to create date range array from start date to end date
+function createDateRangeArray(startDate, endDate) {
+    const dateRangeArray = [];
+    let currentDate = new Date(startDate);
+
+    while (currentDate <= endDate) {
+        dateRangeArray.push(currentDate.toISOString().split('T')[0]);
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dateRangeArray;
+}
+
+// Function to check if a date range is occupied for a given resort
+async function isDateRangeOccupied(resortId, startDate, endDate) {
+    const resortOrders = await Order.find({ resortId: resortId });
+    const occupiedDates = resortOrders.reduce((acc, order) => {
+        const orderStartDate = new Date(order.dateStart);
+        const orderEndDate = new Date(order.dateEnd);
+        const datesInRange = createDateRangeArray(orderStartDate, orderEndDate);
+        return [...acc, ...datesInRange];
+    }, []);
+
+    const dateRangeArray = createDateRangeArray(startDate, endDate);
+    return dateRangeArray.some(date => occupiedDates.includes(date));
+}
+
 exports.addOrder = async (req, res, next) => {
     const body = req.body;
     try {
@@ -29,28 +56,63 @@ exports.addOrder = async (req, res, next) => {
         if (validate.error) {
             throw Error(validate.error);
         }
+
         body.dateOrder = new Date(body.dateOrder);
         body.dateStart = new Date(body.dateStart);
         body.dateEnd = new Date(body.dateEnd);
-        if (body.dateStart.getTime()<body.dateEnd.getTime()) {
-        }else{
-            throw new Error("date invalid 1")
+
+        if (body.dateStart.getTime() >= body.dateEnd.getTime()) {
+            throw new Error("Invalid date range");
         }
-        const today = new Date(); // יצירת תאריך ליום הנוכחי
-        if(body.dateStart.getTime() <= today.getTime()){
-            throw new Error("date invalid 2")
+
+        const today = new Date();
+        if (body.dateStart.getTime() <= today.getTime()) {
+            throw new Error("Invalid start date");
         }
-        body.resortId = new Types.ObjectId(body.resortId)
-        body.userId = new Types.ObjectId(body.userId)
+
+        body.resortId = new Types.ObjectId(body.resortId);
+        body.userId = new Types.ObjectId(body.userId);
+
+        // Check if any dates in the range are already occupied
+        const overlap = await isDateRangeOccupied(body.resortId, body.dateStart, body.dateEnd);
+
+        if (overlap) {
+            throw new Error("Date range is already occupied");
+        }
+
         const newOrder = new Order(body);
         await newOrder.save();
+
         return res.status(201).send(newOrder);
-
     } catch (error) {
-        next(error)
+        next(error);
     }
-
 };
+
+exports.dateToken = async (req, res, next) => {
+    try {
+        if(req.type=="owner"){
+
+        const { resortId } = req.params;
+
+        // Find orders for the specified resort and populate the "resortId" field
+        const orders = await Order.find({ resortId: resortId }).populate("resortId");
+
+        // Extract and flatten occupied dates from the orders into a single array
+        const occupiedDates = orders.reduce((acc, order) => {
+            const startDate = new Date(order.dateStart);
+            const endDate = new Date(order.dateEnd);
+
+            const datesInRange = createDateRangeArray(startDate, endDate);
+            return [...acc, ...datesInRange];
+        }, []);
+
+        res.status(200).json({ occupiedDates });}
+    } catch (error) {
+        next(error);
+    }
+};
+
 exports.updateOrder=async(req,res,next)=>{
     try {
         const body = req.body;
@@ -96,7 +158,43 @@ exports.deleteOrder=async(req,res,next)=>{
 
 exports.getAll=async(req,res,next)=>{
     try {
-        const orders=await Order.find({}).populate("resortId").populate("userId");
+        if(req.type=="owner"&&req.user?.roles=="admin"){
+            const orders=await Order.find({}).populate("resortId").populate("userId");
+            if (!orders) return next(new AppError(400, "resort not exist"));
+    
+            return res.status(200).send({
+                status:"success",
+                orders
+            })
+        }else{
+            return next(new AppError(400, "Not authorized"));
+        }
+      
+    } catch (error) {
+        next(error)
+    }
+}
+
+exports.getOrder=async(req,res,next)=>{
+    try {
+        const {id}=req.params;
+        const order=await Order.findOne({id:id}).populate("resortId").populate("userId");
+        if (!order) return next(new AppError(400, "resort not exist"));
+
+        return res.status(200).send({
+            status:"success",
+            order
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+exports.getOrderByUserId=async(req,res,next)=>{
+    try {
+        const {userId}=req.params;
+        const orders=await Order.findOne({userId:userId}).populate("resortId").populate("userId");
+        if (!orders) return next(new AppError(400, "resort not exist"));
+
         return res.status(200).send({
             status:"success",
             orders
@@ -106,15 +204,3 @@ exports.getAll=async(req,res,next)=>{
     }
 }
 
-exports.getOrder=async(req,res,next)=>{
-    try {
-        const {id}=req.params;
-        const order=await Order.findOne({id:id}).populate("ownerId").populate("userId");
-        return res.status(200).send({
-            status:"success",
-            order
-        })
-    } catch (error) {
-        next(error)
-    }
-}

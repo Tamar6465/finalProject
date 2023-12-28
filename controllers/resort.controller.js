@@ -12,8 +12,8 @@ const resortJoiSchema = {
         accessibility: Joi.string().required(),
         price: Joi.number().required(),
         category: Joi.string().required(),
-        placeId:Joi.string().required(),
-        numBed:Joi.string().required()
+        placeId: Joi.string().required(),
+        numBed: Joi.string().required()
 
     }),
     update: Joi.object().keys({
@@ -24,8 +24,8 @@ const resortJoiSchema = {
         accessibility: Joi.string(),
         price: Joi.number(),
         category: Joi.string(),
-        placeId:Joi.string(),
-        numBed:Joi.string()
+        placeId: Joi.string(),
+        numBed: Joi.string()
 
     })
 };
@@ -94,6 +94,19 @@ exports.getAllResort = async (req, res, next) => {
         console.error(error);
     }
 }
+exports.getResort = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const resort = await Resort.find({ id: id }).populate("ownerId");
+        if (!resort) return next(new AppError(400, "resort not exist"));
+        res.status(200).json({
+            status: "success",
+            resort
+        })
+    } catch (error) {
+        console.error(error);
+    }
+}
 exports.getResortByDisabled = async (req, res, next) => {
     const { disable } = req.params;
     try {
@@ -120,3 +133,17 @@ exports.getResortByCity = async (req, res, next) => {
         console.error(error);
     }
 };
+exports.getbyPrice = async (req, res, next) => {
+    const minPrice = req.query.minPrice;
+    const maxPrice = req.query.maxPrice;
+    try {
+        const resorts = await Resort.find({ price: { $gte: minPrice, $lte: maxPrice } }).populate("ownerId");
+        if (!resorts) return next(new AppError(400, "resort not exist"));
+        res.status(200).json({
+            status: "success",
+            resorts
+        })
+    } catch (error) {
+        next(error)
+    }
+}
