@@ -30,29 +30,39 @@ const resortJoiSchema = {
     })
 };
 exports.addResort = async (req, res, next) => {
+
     const body = req.body;
     try {
-        const validate = resortJoiSchema.add.validate(body);
-        if (validate.error) {
-            throw Error(validate.error);
-        }
-        console.log(body.ownerId);
-        body.ownerId = new Types.ObjectId(body.ownerId)
-        const newResort = new Resort(body);
-        await newResort.save();
+        if(req.type=="owner"){
+            const validate = resortJoiSchema.add.validate(body);
+            if (validate.error) {
+                throw Error(validate.error);
+            }
+            console.log(body.ownerId);
+            body.ownerId = new Types.ObjectId(body.ownerId)
+            const newResort = new Resort(body);
+            await newResort.save();
+    
+            //* generate token
+            return res.status(201).send(newResort);
+        }else{
+            return next(new AppError(400, "Not authorized"));
 
-        //* generate token
-        return res.status(201).send(newResort);
+        }
+      
     }
     catch (error) {
         console.error(error);
     }
 }
 exports.updateResort = async (req, res, next) => {
+
     const body = req.body;
     const { id } = req.params;
     console.log(id);
     try {
+        if(req.type=="owner"){
+
         const validate = resortJoiSchema.update.validate(body);
         if (validate.error) {
             throw Error(validate.error);
@@ -63,6 +73,10 @@ exports.updateResort = async (req, res, next) => {
             status: "success",
             update
         })
+    }else{
+        return next(new AppError(400, "Not authorized"));
+
+    }
     }
     catch (error) {
         console.error(error);
@@ -71,12 +85,18 @@ exports.updateResort = async (req, res, next) => {
 exports.deleteResort = async (req, res, next) => {
     const { id } = req.params;
     try {
+        if(req.type=="owner"&&req.user?.roles=="admin"){
+
         const deleteResort = await Resort.deleteOne({ id: id });
         //* generate token
         res.status(201).json({
             status: "success",
             deleteResort
-        })
+        })}
+        else{
+            return next(new AppError(400, "Not authorized"));
+
+        }
     }
     catch (error) {
         console.error(error);
