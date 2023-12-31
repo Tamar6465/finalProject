@@ -3,7 +3,7 @@ import { userContext } from '../context/userContext'
 import { registerOwner } from '../APICalls/user.API'
 
 export default function SignUpOwner() {
-    const { userLogin } = useContext(userContext)
+    const { setLogin } = useContext(userContext)
     const [data, setData] = useState({
         email: '',
         password: '',
@@ -18,7 +18,7 @@ export default function SignUpOwner() {
 
     const signUp = async (e) => {
         e.preventDefault();
-        setUserLogin(registerOwner(data));
+        setLogin(registerOwner(data));
     }
 
 

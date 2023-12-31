@@ -15,7 +15,6 @@ export default function FormResort() {
         const file = e.target.files[0];
 
         if (file) {
-            // כאשר נבחרת תמונה, נעדכן את ה-state
             setSelectedImage(file);
         }
     };

@@ -4,7 +4,7 @@ import { registerUser } from '../APICalls/user.API'
 import { useNavigate } from 'react-router-dom'
 
 export default function SignUpUser() {
-    const { setUserLogin } = useContext(userContext)
+    const { setLogin } = useContext(userContext)
     const navigate=useNavigate()
     const [data, setData] = useState({
         email: '',
@@ -22,7 +22,9 @@ export default function SignUpUser() {
 
     const signUp = async (e) => {
         e.preventDefault();
-        setUserLogin(registerUser(data));
+        const current =await registerUser(data);
+        console.log(setLogin);
+        setLogin(current);
         navigate('/listResort')
     }
 
@@ -62,10 +64,10 @@ export default function SignUpUser() {
                     <select name="disabled" onChange={event =>{ handleInputs(event)
                     console.log(event);
                     }}>
-                        <option value="Visual">Visual</option>
-                        <option value="Hearing">Hearing</option>
-                        <option value="Motor">Motor</option>
-                        <option value="MentalHealth">MentalHealth</option>
+                        <option value="visual">visual</option>
+                        <option value="hearing">hearing</option>
+                        <option value="motor">motor</option>
+                        <option value="mentalHealth">mentalHealth</option>
                     </select>
                     <button className="btn btn-secondary btn-lg btn-block text-info m-3" onClick={signUp}>Sign Up User</button>
                 </div>

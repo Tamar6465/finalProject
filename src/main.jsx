@@ -2,12 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-import Provider from './context/resortContext.jsx'
+import UserProvider from './context/userContext.jsx'
+import ResortProvider from './context/resortContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Provider>
-    <App />
-    </Provider>
+    <UserProvider>
+      <ResortProvider>
+        <App />
+      </ResortProvider>
+    </UserProvider>
   </React.StrictMode>,
 )

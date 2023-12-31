@@ -7,10 +7,6 @@ import { resortContext } from '../context/resortContext'
 export default function ListResort() {
     // const navigate = useNavigate();
     const { resorts, getAllResorts } = useContext(resortContext);
-    console.log(resorts);
-    const moreDetails = () => {
-        // navigate('/resort');
-    }
 
     useEffect(() => {
         getAllResorts();

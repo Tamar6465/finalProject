@@ -4,7 +4,7 @@ import { loginUser } from '../APICalls/user.API'
 import { useNavigate } from 'react-router-dom'
 
 export default function LoginUser() {
-    const { setUserLogin } = useContext(userContext)
+    const { setLogin } = useContext(userContext)
     const navigate = useNavigate()
     const [data, setData] = useState({
         email: '',
@@ -19,13 +19,14 @@ export default function LoginUser() {
 
     const login = async (e) => {
         e.preventDefault();
-        setUserLogin(loginUser(data));
-        navigate('/listResort')
+        const token  = await loginUser(data);
+        localStorage.setItem("tokenUser", token)
+        setLogin(token);
+        // navigate('/listResort');
     }
 
     const signUp = async (e) => {
         e.preventDefault();
-
         navigate('/signUpUser')
     }
 
