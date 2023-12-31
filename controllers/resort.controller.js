@@ -130,7 +130,7 @@ exports.getResort = async (req, res, next) => {
 exports.getResortByDisabled = async (req, res, next) => {
     const { disable } = req.params;
     try {
-        const resort = await Resort.find({ disable: disable }).populate("ownerId");
+        const resort = await Resort.find({ accessibility: disable }).populate("ownerId");
         if (!resort) return next(new AppError(400, "resort not exist"));
         res.status(200).json({
             status: "success",
