@@ -37,9 +37,9 @@ exports.register = async (req, res, next) => {
         const newUser = new User(body);
         await newUser.save();
 
-        //* generate token
+        const token = generateToken(newUser);
 
-        return res.status(201).send(newUser);
+        return res.status(201).send({user:newUser,token:token});
     } catch (error) {
         next(error);
     }
