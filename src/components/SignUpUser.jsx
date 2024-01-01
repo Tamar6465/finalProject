@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { userContext } from '../context/userContext'
 import { registerUser } from '../APICalls/user.API'
 import { useNavigate } from 'react-router-dom'
 
 export default function SignUpUser() {
-    const { setLogin } = useContext(userContext)
+    const {userLogin, setLogin } = useContext(userContext)
     const navigate=useNavigate()
     const [data, setData] = useState({
         email: '',
@@ -22,12 +22,18 @@ export default function SignUpUser() {
 
     const signUp = async (e) => {
         e.preventDefault();
-        const current =await registerUser(data);
-        console.log(setLogin);
-        setLogin(current);
-        navigate('/listResort')
+        const {token,user}  = await registerUser(data);
+        console.log(token,user);
+        localStorage.setItem("tokenUser", token)
+        setLogin(user);
     }
-
+    useEffect(()=>{
+        console.log(userLogin);
+        if (userLogin?.email) {
+            navigate('/listResort');
+        }
+    
+       },[userLogin])
 
     return (
         <div className='d-flex justify-content-center align-items-center mt-5'>

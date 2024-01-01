@@ -1,13 +1,14 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { userContext } from '../context/userContext'
 import { registerOwner } from '../APICalls/user.API'
 
 export default function SignUpOwner() {
-    const { setLogin } = useContext(userContext)
+    const {userLogin, setLogin } = useContext(userContext)
     const [data, setData] = useState({
         email: '',
         password: '',
-        name: ''
+        name: '',
+        phone:''
     })
 
     const handleInputs = (event) => {
@@ -18,8 +19,19 @@ export default function SignUpOwner() {
 
     const signUp = async (e) => {
         e.preventDefault();
-        setLogin(registerOwner(data));
+        
+        const {owner,token}  = await registerOwner(data);
+        console.log(token,owner);
+        localStorage.setItem("tokenUser", token)
+        setLogin(owner);
     }
+    useEffect(()=>{
+        console.log(userLogin);
+        if (userLogin?.email) {
+            navigate('/formResort');
+        }
+    
+       },[userLogin])
 
 
     return (
@@ -44,6 +56,13 @@ export default function SignUpOwner() {
                         placeholder="Name"
                         name="name"
                         type="text"
+                        className="input-fields list-group-item m-3"
+                        onChange={event => handleInputs(event)}
+                    />
+                    <input
+                        placeholder="Phone"
+                        name="phone"
+                        type="phone"
                         className="input-fields list-group-item m-3"
                         onChange={event => handleInputs(event)}
                     />

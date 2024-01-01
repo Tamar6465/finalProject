@@ -6,10 +6,8 @@ import LoginOwner from './components/LoginOwner'
 import LoginUser from './components/LoginUser'
 import SignUpOwner from './components/SignUpOwner'
 import SignUpUser from './components/SignUpUser'
-import Provider from './context/userContext'
 import Home from './components'
 import ContactUs from './components/ContactUs'
-import Map from './components/Map'
 
 function App() {
 
@@ -18,7 +16,6 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<Home />} />
-
             <Route path='/loginUser' element={<LoginUser />} />
             <Route path='/signUpUser' element={<SignUpUser />} />
             <Route path='/loginOwner' element={<LoginOwner />} />

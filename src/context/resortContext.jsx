@@ -3,7 +3,7 @@ import { createContext, useReducer, useState } from "react";
 import resortsReduces from './reduces/resort.reduces'
 import { addResortAPI, deleteResortAPI, getAllResortsAPI, getResortByCityAPI, getResortByDisabledAPI, getResortByPricedAPI } from "../APICalls/resort.API";
 
-const resortContext = createContext();
+const resortContext = createContext({});
 
 const ResortProvider = ({ children }) => {
     const [resorts, dispach] = useReducer(resortsReduces, []);

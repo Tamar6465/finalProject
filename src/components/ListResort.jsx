@@ -4,6 +4,7 @@ import { resortContext } from '../context/resortContext'
 import Map from './Map';
 import { geocode } from 'opencage-api-client';
 import axios from 'axios';
+import MapComponent from './MapComponent';
 
 
 // import { useNavigate } from 'react-router-dom';
@@ -126,6 +127,7 @@ export default function ListResort() {
 
     return (
         <div>
+            <MapComponent location={[{ name: "1", lan: 30, lng: 20 }, { name: "2", lan: 25, lng: 35 }]} />
             {resorts?.map((resort) => {
                 // getCoordinates(resort.city)
                 return <Resort
@@ -133,7 +135,9 @@ export default function ListResort() {
                     key={resort.id}
                 />
             })}
-            <Map placesResorts={placesResorts} />
+
+
+            {/* <Map placesResorts={placesResorts} /> */}
         </div>
     )
 }

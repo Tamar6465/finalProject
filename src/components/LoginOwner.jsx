@@ -1,9 +1,13 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { userContext } from '../context/userContext'
 import { loginOwner } from '../APICalls/user.API'
+import { useNavigate } from 'react-router-dom'
+
 
 export default function LoginOwner() {
-    const { setLogin } = useContext(userContext)
+    const { userLogin,setLogin } = useContext(userContext)
+    const navigate = useNavigate()
+
     const [data, setData] = useState({
         email: '',
         password: '',
@@ -14,11 +18,24 @@ export default function LoginOwner() {
         setData({ ...data, ...inputs })
     }
 
-
+    const signUp = async (e) => {
+        e.preventDefault();
+        navigate('/signUpOwner')
+    }
     const login = async (e) => {
         e.preventDefault();
-        setLogin(loginOwner(data));
+        const { token, owner } = await loginOwner(data);
+        console.log(token, owner);
+        localStorage.setItem("tokenUser", token)
+        setLogin(owner);
     }
+    useEffect(() => {
+        console.log(userLogin);
+        if (userLogin?.email) {
+            navigate('/formResort');
+        }
+
+    }, [userLogin])
 
 
     return (
@@ -32,6 +49,7 @@ export default function LoginOwner() {
                         className="input-fields list-group-item m-3"
                         onChange={event => handleInputs(event)}
                     />
+                    
                     <input
                         placeholder="Password"
                         name="password"
@@ -40,6 +58,8 @@ export default function LoginOwner() {
                         onChange={event => handleInputs(event)}
                     />
                     <button className="btn btn-secondary btn-lg btn-block text-info m-3" onClick={login}>Log In Owner</button>
+                    <button className="btn btn-secondary btn-lg btn-block text-info m-3" onClick={signUp}>Sign Up owner</button>
+
                 </div>
             </div>
         </div>
