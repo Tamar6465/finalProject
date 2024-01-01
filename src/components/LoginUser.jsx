@@ -30,7 +30,6 @@ export default function LoginUser() {
         if (userLogin?.email) {
             navigate('/listResort');
         }
-
     }, [userLogin])
 
     const signUp = async (e) => {
