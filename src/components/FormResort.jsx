@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { resortContext } from '../context/resortContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function FormResort() {
     const { resorts, addResort } = useContext(resortContext);
@@ -15,9 +16,10 @@ export default function FormResort() {
         ownerId: "",
         description: '',
         phone: '',
-        city:''
+        city: ''
     });
     const [selectedImage, setSelectedImage] = useState(null);
+    const navigate = useNavigate()
     const handleImageChange = (e) => {
         const file = e.target.files[0];
 
@@ -42,10 +44,11 @@ export default function FormResort() {
     const handleSubmit = (e) => {
         e.preventDefault();
         // ניתן להוסיף פה לוגיקת שליחת הטופס לשרת או לעשות משהו אחר
-        formData.images.push(selectedImage) ;
+        formData.images.push(selectedImage);
         console.log('Form submitted:', formData);
 
         addResort(formData);
+        navigate("/Owner")
     };
 
     return (
