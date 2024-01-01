@@ -13,6 +13,7 @@ app.use(express.json());
 
 app.use("/accessiableHeaven/api/v1/users", userRoutes);
 app.use("/accessiableHeaven/api/v1/owners", ownerRoutes);
+
 app.use("/accessiableHeaven/api/v1/resorts", resortRoutes);
 app.use("/accessiableHeaven/api/v1/orders", orderRoutes);
 

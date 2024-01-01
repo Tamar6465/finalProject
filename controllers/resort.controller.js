@@ -2,6 +2,7 @@ const Joi = require("joi");
 const { Resort } = require("../models/resort.model");
 const { Types } = require("mongoose");
 const { dateTokenForRent } = require("./order.controller");
+const AppError = require("../utils/AppError");
 
 const resortJoiSchema = {
 
@@ -9,13 +10,16 @@ const resortJoiSchema = {
         name: Joi.string().required(),
         adress: Joi.string().required(),
         city: Joi.string().required(),
-        ownerId: Joi.string().required(),
+        ownerId: Joi.required(),
         accessibility: Joi.string().required(),
         price: Joi.number().required(),
         category: Joi.string().required(),
-        placeId: Joi.string().required(),
+        placeId: Joi.string(),
         numBed: Joi.string().required(),
-        events:Joi.array()
+        events:Joi.array(),
+        images:Joi.array(),
+        description: Joi.string(),
+        phone:Joi.string()
 
     }),
     update: Joi.object().keys({
@@ -37,21 +41,22 @@ exports.addResort = async (req, res, next) => {
 
     const body = req.body;
     try {
-        if(req.type=="owner"){
+        // if(req.type=="owner"){
+            console.log(body);
+            body.ownerId = new Types.ObjectId(req.user.id);
             const validate = resortJoiSchema.add.validate(body);
             if (validate.error) {
                 throw Error(validate.error);
             }
             console.log(body.ownerId);
-            body.ownerId = new Types.ObjectId(body.ownerId);
             const newResort = new Resort(body);
             await newResort.save();
             //* generate token
             return res.status(201).send(newResort);
-        }else{
-            return next(new AppError(400, "Not authorized"));
+        // }else{
+        //     return next(new AppError(400, "Not authorized"));
 
-        }
+        // }
       
     }
     catch (error) {

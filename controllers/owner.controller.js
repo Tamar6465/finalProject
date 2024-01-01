@@ -38,8 +38,8 @@ exports.register = async (req, res, next) => {
         await newOwner.save();
 
         //* generate token
-        
-        return res.status(201).send(newOwner);
+        const token = generateToken(newOwner);
+        return res.status(201).send({owner:newOwner,token:token});
     } catch (error) {
         next(error);
     }
@@ -56,7 +56,7 @@ exports.login = async (req, res, next) => {
             throw new Error('Password or email not valid');
         }
         const token = generateToken(owner);
-        return res.send(token);       
+        return res.send({token ,owner});       
     } catch (error) {
         next(error);
     }

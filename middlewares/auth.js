@@ -5,6 +5,7 @@ const { decodeToken } = require("../utils/jwt");
 exports.auth = (role) => {
     return async function (req, res, next) {
         let token = req.headers["authorization"];
+        console.log(token,"11111111111111111111111");
         if (!token) return res.sendStatus(401);
         token = token.split(" ")[1];
         try {
@@ -20,10 +21,11 @@ exports.auth = (role) => {
                 if (!owner) {
                     return next(new AppError(403, "Please login, no user"));
                 }
+                req.user=owner;
             } else {
                 req.type = "user";
+                req.user = user;
             }
-            req.user = user;
             next();
         } catch (error) {
             next(error);

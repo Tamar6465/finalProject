@@ -20,7 +20,7 @@ const resortSchema = new Schema({
     },
     placeId: {
         type: String,
-        required: true
+        required: false
     },
     accessibility: {
         type: String,
