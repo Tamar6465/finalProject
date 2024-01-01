@@ -3,7 +3,7 @@ const { addOrder, updateOrder, deleteOrder, getAll, getOrder, dateToken, getOrde
 const { auth } = require("../middlewares/auth");
 const router = express.Router();
 
-router.post("/addOrder",auth, addOrder);
+router.post("/addOrder",auth(), addOrder);
 router.put("/updateOrder/:id",auth, updateOrder);
 router.delete("/deleteOrder/:id",auth, deleteOrder);
 router.get("/getAll", getAll);

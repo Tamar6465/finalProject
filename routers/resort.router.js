@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get("/getAll", getAllResort);
 router.get("/getByCity/:city", getResortByCity);
-router.get("/getByDisabled/:disabled", getResortByDisabled);
+router.get("/getByDisabled/:disable", getResortByDisabled);
 router.get("/getResortByPrice",getbyPrice)
 router.post("/addResort", addResort);
 router.put("/updateResort/:id",updateResort);

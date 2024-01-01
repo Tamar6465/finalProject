@@ -1,6 +1,7 @@
 const Joi = require("joi");
 const { Resort } = require("../models/resort.model");
 const { Types } = require("mongoose");
+const { dateTokenForRent } = require("./order.controller");
 
 const resortJoiSchema = {
 
@@ -13,7 +14,8 @@ const resortJoiSchema = {
         price: Joi.number().required(),
         category: Joi.string().required(),
         placeId: Joi.string().required(),
-        numBed: Joi.string().required()
+        numBed: Joi.string().required(),
+        events:Joi.array()
 
     }),
     update: Joi.object().keys({
@@ -25,7 +27,9 @@ const resortJoiSchema = {
         price: Joi.number(),
         category: Joi.string(),
         placeId: Joi.string(),
-        numBed: Joi.string()
+        numBed: Joi.string(),
+        events:Joi.array()
+
 
     })
 };
@@ -39,10 +43,9 @@ exports.addResort = async (req, res, next) => {
                 throw Error(validate.error);
             }
             console.log(body.ownerId);
-            body.ownerId = new Types.ObjectId(body.ownerId)
+            body.ownerId = new Types.ObjectId(body.ownerId);
             const newResort = new Resort(body);
             await newResort.save();
-    
             //* generate token
             return res.status(201).send(newResort);
         }else{

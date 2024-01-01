@@ -57,7 +57,7 @@ exports.login = async (req, res, next) => {
             throw new Error('Password or email not valid');
         }
         const token = generateToken(user);
-        return res.send(token);
+        return res.send({token,user});
     } catch (error) {
         next(error);
     }

@@ -1,6 +1,9 @@
 const Joi = require("joi");
 const { Order } = require("../models/order.model");
 const { Types } = require("mongoose");
+const AppError = require("../utils/AppError");
+const { updateResort } = require("./resort.controller");
+const { Resort } = require("../models/resort.model");
 const orderJoiSchema = {
     add: Joi.object().keys({
         dateOrder: Joi.date().required(),
@@ -50,6 +53,7 @@ async function isDateRangeOccupied(resortId, startDate, endDate) {
 }
 
 exports.addOrder = async (req, res, next) => {
+    console.log("jjjjjjjjjjjjjjjjj");
     const body = req.body;
     try {
         const validate = orderJoiSchema.add.validate(body);
@@ -69,17 +73,19 @@ exports.addOrder = async (req, res, next) => {
         if (body.dateStart.getTime() <= today.getTime()) {
             throw new Error("Invalid start date");
         }
-
+const resortId=body.resortId;
         body.resortId = new Types.ObjectId(body.resortId);
         body.userId = new Types.ObjectId(body.userId);
 
         // Check if any dates in the range are already occupied
         const overlap = await isDateRangeOccupied(body.resortId, body.dateStart, body.dateEnd);
-
         if (overlap) {
             throw new Error("Date range is already occupied");
         }
-
+    const occupiedDates= await this.datTokenForResort(resortId);
+    console.log(occupiedDates,resortId);
+         const update=await Resort.updateOne({_id:resortId},{events:occupiedDates})
+         console.log(update);
         const newOrder = new Order(body);
         await newOrder.save();
 
@@ -88,25 +94,26 @@ exports.addOrder = async (req, res, next) => {
         next(error);
     }
 };
+exports.datTokenForResort=async(resortId)=>{
+    const orders = await Order.find({ resortId: resortId }).populate("resortId");
 
+    // Extract and flatten occupied dates from the orders into a single array
+    const occupiedDates = orders.reduce((acc, order) => {
+        const startDate = new Date(order.dateStart);
+        const endDate = new Date(order.dateEnd);
+
+        const datesInRange = createDateRangeArray(startDate, endDate);
+        return [...acc, ...datesInRange];
+    }, []);
+    return occupiedDates;
+
+}
 exports.dateToken = async (req, res, next) => {
     try {
         if(req.type=="owner"){
 
         const { resortId } = req.params;
-
-        // Find orders for the specified resort and populate the "resortId" field
-        const orders = await Order.find({ resortId: resortId }).populate("resortId");
-
-        // Extract and flatten occupied dates from the orders into a single array
-        const occupiedDates = orders.reduce((acc, order) => {
-            const startDate = new Date(order.dateStart);
-            const endDate = new Date(order.dateEnd);
-
-            const datesInRange = createDateRangeArray(startDate, endDate);
-            return [...acc, ...datesInRange];
-        }, []);
-
+        const occupiedDates=this.datTokenForResort(resortId)
         res.status(200).json({ occupiedDates });}
     } catch (error) {
         next(error);
@@ -158,7 +165,7 @@ exports.deleteOrder=async(req,res,next)=>{
 
 exports.getAll=async(req,res,next)=>{
     try {
-        if(req.type=="owner"&&req.user?.roles=="admin"){
+        // if(req.type=="user"){
             const orders=await Order.find({}).populate("resortId").populate("userId");
             if (!orders) return next(new AppError(400, "resort not exist"));
     
@@ -166,9 +173,9 @@ exports.getAll=async(req,res,next)=>{
                 status:"success",
                 orders
             })
-        }else{
-            return next(new AppError(400, "Not authorized"));
-        }
+        // }else{
+        //     return next(new AppError(400, "Not authorized"));
+        // }
       
     } catch (error) {
         next(error)
