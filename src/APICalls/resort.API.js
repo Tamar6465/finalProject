@@ -26,18 +26,18 @@ const editResortsAPI = (resort, id) => {
     })
 }
 const getResortByCityAPI = async (city) => {
-    const res = await axios.get(`${baseURLResort}/getByCity:${city}`);
-    const temp = await res.json();
+    const res = await axios.get(`${baseURLResort}/getByCity/${city}`);
+    const temp = await res.data.resort;
     return temp;
 }
 const getResortByDisabledAPI = async (disability) => {
-    const res = await axios.get(`${baseURLResort}/getByDisabled:${disability}`);
-    const temp = await res.json();
+    const res = await axios.get(`${baseURLResort}/getByDisabled/${disability}`);
+    const temp = await res.data.resort;
     return temp;
 }
 const getResortByPricedAPI = async (minPrice, maxPrice) => {
     const res = await axios.get(`${baseURLResort}/getResortByPrice?minPrice=${minPrice}&maxPrice=${maxPrice}`);
-    const temp = await res.json();
+    const temp = await res.data.resort;
     return temp;
 }
 

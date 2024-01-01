@@ -8,14 +8,14 @@ const resortContext = createContext();
 const ResortProvider = ({ children }) => {
     const [resorts, dispach] = useReducer(resortsReduces, []);
     const [selectedResort, setSelectedResort] = useState(null);
-    console.log(resorts);
+    const [city, setCity] = useState(null)
     const selectResort = (resort) => {
         setSelectedResort(resort);
     }
 
     const getAllResorts = async () => {
         try {
-            const temp = getAllResortsAPI();
+            const temp = await getAllResortsAPI();
             dispach({ type: "GET_RESORTS", payload: temp })
         } catch (error) {
             console.log(error.message);
@@ -23,31 +23,34 @@ const ResortProvider = ({ children }) => {
     };
     const getResortByCity = async (city) => {
         try {
-            const temp = getResortByCityAPI(city)
-            setSelectedResort(temp)
+            const temp = await getResortByCityAPI(city)
+            dispach({ type: "GET_RESORTS", payload: temp })
+
         } catch (error) {
             console.log(error.message);
         }
     };
     const getResortByDisabled = async (disability) => {
         try {
-            const temp = getResortByDisabledAPI(disability);
-            setSelectedResort(temp)
+            const temp = await getResortByDisabledAPI(disability);
+            dispach({ type: "GET_RESORTS", payload: temp })
+
         } catch (error) {
             console.log(error.message);
         }
     };
     const getResortByPrice = async (minPrice, maxPrice) => {
         try {
-            const temp = getResortByPricedAPI(minPrice,maxPrice);
-            setSelectedResort(temp)
+            const temp = await getResortByPricedAPI(minPrice, maxPrice);
+            dispach({ type: "GET_RESORTS", payload: temp })
+
         } catch (error) {
             console.log(error.message);
         }
     };
     const addResort = (resort) => {
         try {
-           addResortAPI(resort)
+            addResortAPI(resort)
             dispach({ type: "ADD_RESORT", payload: resort })
 
         } catch (error) {
@@ -72,7 +75,7 @@ const ResortProvider = ({ children }) => {
             alert("error", err.message)
         }
     }
-    const shared = { resorts, getAllResorts, getResortByCity, getResortByDisabled, getResortByPrice, addResort, editResorts, deleteResort }
+    const shared = { city,setCity,resorts, getAllResorts, getResortByCity, getResortByDisabled, getResortByPrice, addResort, editResorts, deleteResort }
     return (
         <resortContext.Provider value={shared}>
             {children}

@@ -19,10 +19,11 @@ export default function LoginUser() {
 
     const login = async (e) => {
         e.preventDefault();
-        const token  = await loginUser(data);
+        const {token,user}  = await loginUser(data);
+        console.log(user);
         localStorage.setItem("tokenUser", token)
         setLogin(token);
-        // navigate('/listResort');
+        if(token) navigate('/listResort');
     }
 
     const signUp = async (e) => {

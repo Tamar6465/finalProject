@@ -9,6 +9,7 @@ import SignUpUser from './components/SignUpUser'
 import Provider from './context/userContext'
 import Home from './components'
 import ContactUs from './components/ContactUs'
+import Map from './components/Map'
 
 function App() {
 
