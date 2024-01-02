@@ -5,6 +5,7 @@ import Map from './Map';
 import { geocode } from 'opencage-api-client';
 import axios from 'axios';
 import MapComponent from './MapComponent';
+import ResortCard from './ResortCard';
 
 
 // import { useNavigate } from 'react-router-dom';
@@ -16,9 +17,10 @@ export default function ListResort() {
     const [placesResorts, setPlacesResorts] = useState([]);
     let coords = []
     useEffect(() => {
-        console.log("city", city);
-        getResortByDisabled('visual');
-        if (city) getResortByCity(city)
+        // console.log("city", city);
+        // getResortByDisabled('visual');
+        // if (city) getResortByCity(city)
+        getAllResorts();
     }, [])
 
     const getCoordinates = async (city) => {
@@ -130,7 +132,7 @@ export default function ListResort() {
             {/* <MapComponent locations={[{ name: "1", lan: 30, lng: 20 }, { name: "2", lan: 25, lng: 35 }]} /> */}
             {resorts?.map((resort) => {
                 // getCoordinates(resort.city)
-                return <Resort
+                return <ResortCard
                     resort={resort}
                     key={resort.id}
                 />

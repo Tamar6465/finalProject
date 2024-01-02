@@ -13,8 +13,8 @@ const navigate=useNavigate();
     }}>
         <button onClick={()=>{navigate('/loginUser')}}>Enter as a user</button>
         <button onClick={()=>{navigate('/loginOwner')}}>Enter as a owner</button>
-        <button onClick={()=>{}}>Enter for me</button>
-        <button onClick={()=>{navigate('/contactUs')}}>Contact Us</button>
+        {/* <button onClick={()=>{}}>Enter for me</button>
+        <button onClick={()=>{navigate('/contactUs')}}>Contact Us</button> */}
     </div>
   )
 }
