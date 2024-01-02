@@ -11,13 +11,17 @@ import MapComponent from './MapComponent';
 
 export default function ListResort() {
     // const navigate = useNavigate();
+    const [city, setCity] = useState({ name: '', coordinates: null });
 
-    const { resorts, getAllResorts, getResortByDisabled, getResortByCity, city } = useContext(resortContext);
+    const [cities, setCities] = useState([
+        // הוסיפי ערים נוספות כרצונך
+    ]);
+    const { resorts, getAllResorts, getResortByDisabled, getResortByCity } = useContext(resortContext);
     const [placesResorts, setPlacesResorts] = useState([]);
-    let coords = []
     useEffect(() => {
-        console.log("city", city);
-        getResortByDisabled('visual');
+        // console.log("city", city);
+        // getResortByDisabled('visual');
+        getAllResorts();
         if (city) getResortByCity(city)
     }, [])
 
@@ -79,18 +83,6 @@ export default function ListResort() {
         // return arr
     });
 
-    useEffect(() => {
-        tempFunc()
-        // temp
-        //     .then((succ) => {
-        //         console.log("succ", {succ});
-        //         setPlacesResorts(succ);
-        //     })
-        //     .catch((err) => {
-        //         console.log(err);
-        //     });
-
-    }, []);
 
     // useEffect(() => {
     //     //  const temp = [];
@@ -127,17 +119,15 @@ export default function ListResort() {
 
     return (
         <div>
-            {/* <MapComponent locations={[{ name: "1", lan: 30, lng: 20 }, { name: "2", lan: 25, lng: 35 }]} /> */}
             {resorts?.map((resort) => {
                 // getCoordinates(resort.city)
+                setCities([...cities,resort.city]);
                 return <Resort
                     resort={resort}
                     key={resort.id}
                 />
             })}
-
-
-            {/* <Map placesResorts={placesResorts} /> */}
+            <MapComponent cities={cities} />
         </div>
     )
 }

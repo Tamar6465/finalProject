@@ -47,7 +47,7 @@ const getResortByCityAPI = async (city) => {
             'authorization': `bearer ${localStorage.getItem("tokenUser")}`
         }
     });
-    const temp = await res.json();
+    const temp = await res.data.resort;
     return temp;
 }
 const getResortByDisabledAPI = async (disability) => {
