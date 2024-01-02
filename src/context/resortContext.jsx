@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, useReducer, useState } from "react";
 import resortsReduces from './reduces/resort.reduces'
-import { addResortAPI, deleteResortAPI, getAllResortsAPI, getResortByCityAPI, getResortByDisabledAPI, getResortByPricedAPI } from "../APICalls/resort.API";
+import {getResortByIdAPI, addResortAPI, deleteResortAPI, getAllResortsAPI, getResortByCityAPI, getResortByDisabledAPI, getResortByPricedAPI } from "../APICalls/resort.API";
 
 const resortContext = createContext({});
 
@@ -23,6 +23,16 @@ const ResortProvider = ({ children }) => {
     const getResortByCity = async (city) => {
         try {
             const temp = await getResortByCityAPI(city)
+            dispach({ type: "GET_RESORTS", payload: temp })
+
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+    const getResortById = async (id) => {
+        try {
+            
+            const temp = await getResortByIdAPI(id)
             dispach({ type: "GET_RESORTS", payload: temp })
 
         } catch (error) {
@@ -74,7 +84,7 @@ const ResortProvider = ({ children }) => {
             alert("error", err.message)
         }
     }
-    const shared = {resorts, getAllResorts, getResortByCity, getResortByDisabled, getResortByPrice, addResort, editResorts, deleteResort }
+    const shared = {getResortById, resorts, getAllResorts, getResortByCity, getResortByDisabled, getResortByPrice, addResort, editResorts, deleteResort }
     return (
         <resortContext.Provider value={shared}>
             {children}

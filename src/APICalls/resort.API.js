@@ -50,6 +50,16 @@ const getResortByCityAPI = async (city) => {
     const temp = await res.data.resort;
     return temp;
 }
+const getResortByIdAPI = async (id) => {
+    const res = await axios.get(`${baseURLResort}/getById/${id}`,{
+        headers: {
+            'authorization': `bearer ${localStorage.getItem("tokenUser")}`
+        }
+    });
+    
+    const temp = await res.json();
+    return temp;
+}
 const getResortByDisabledAPI = async (disability) => {
     const res = await axios.get(`${baseURLResort}/getByDisabled/${disability}`,{
         headers: {
@@ -69,4 +79,4 @@ const getResortByPricedAPI = async (minPrice, maxPrice) => {
     return temp;
 }
 
-export { deleteResortAPI, getAllResortsAPI, getResortByCityAPI, getResortByDisabledAPI, getResortByPricedAPI, addResortAPI,editResortsAPI }
+export { getResortByIdAPI, deleteResortAPI, getAllResortsAPI, getResortByCityAPI, getResortByDisabledAPI, getResortByPricedAPI, addResortAPI,editResortsAPI }

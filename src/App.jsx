@@ -8,7 +8,9 @@ import SignUpOwner from './components/SignUpOwner'
 import SignUpUser from './components/SignUpUser'
 import Home from './components'
 import ContactUs from './components/ContactUs'
-
+import Resort from './components/Resort'
+import Order from './components/Order'
+import Owner from './components/Owner'
 function App() {
 
   return (
@@ -21,8 +23,12 @@ function App() {
             <Route path='/loginOwner' element={<LoginOwner />} />
             <Route path='/signUpOwner' element={<SignUpOwner />} />
             <Route path='/listResort' element={<ListResort />} />
+            <Route path='/resort/:id' element={<Resort />} />
             <Route path='/formResort' element={<FormResort />} />
             <Route path='/contactUs' element={<ContactUs />} />
+            <Route path='/resort' element={<Resort />} />
+            <Route path='/order' element={<Order />} />
+            <Route path='/owner' element={<Owner />} />
           </Routes>
         </BrowserRouter>
     </>

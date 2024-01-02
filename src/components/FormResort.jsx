@@ -18,15 +18,9 @@ export default function FormResort() {
         phone: '',
         city: ''
     });
-    const [selectedImage, setSelectedImage] = useState(null);
-    const navigate = useNavigate()
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
 
-        if (file) {
-            setSelectedImage(file);
-        }
-    };
+    const navigate = useNavigate();
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -34,21 +28,26 @@ export default function FormResort() {
             [name]: value,
         });
     };
-    const handleUpload = (e) => {
-        // כאן יש יותר מקוד להעלאת התמונה לשרת או לעשות משהו אחר
-        // יש להשתמש ב-API של השרת או בשירותי ענן כמו Firebase Storage או AWS S3
-        e.preventDefault();
-        console.log('Uploading image:', selectedImage);
 
+    const handleImageChange = (e) => {
+        const files = e.target.files;
+
+        if (files) {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                images: [...prevFormData.images, ...files],
+            }));
+        }
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        
         // ניתן להוסיף פה לוגיקת שליחת הטופס לשרת או לעשות משהו אחר
-        formData.images.push(selectedImage);
         console.log('Form submitted:', formData);
 
         addResort(formData);
-        navigate("/Owner")
+        navigate("/owner");
     };
 
     return (
@@ -58,13 +57,12 @@ export default function FormResort() {
                 <input type="text" name="name" value={formData.name} onChange={handleChange} />
             </div>
             <div>
-                <input type="file" accept="image/*" onChange={handleImageChange} />
-                {selectedImage && (
-                    <div>
-                        <img src={URL.createObjectURL(selectedImage)} alt="Selected" style={{ maxWidth: '100%' }} />
-                        <button onClick={handleUpload}>העלאה</button>
+                <input type="file" accept="image/*" onChange={handleImageChange} multiple />
+                {formData.images.map((image, index) => (
+                    <div key={index}>
+                        <img src={URL.createObjectURL(image)} alt={`Selected ${index + 1}`} style={{ maxWidth: '100%' }} />
                     </div>
-                )}
+                ))}
             </div>
             <div>
                 <label>מחיר:</label>
