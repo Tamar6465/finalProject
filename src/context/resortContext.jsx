@@ -8,7 +8,6 @@ const resortContext = createContext({});
 const ResortProvider = ({ children }) => {
     const [resorts, dispach] = useReducer(resortsReduces, []);
     const [selectedResort, setSelectedResort] = useState(null);
-    const [city, setCity] = useState(null)
     const selectResort = (resort) => {
         setSelectedResort(resort);
     }
@@ -75,7 +74,7 @@ const ResortProvider = ({ children }) => {
             alert("error", err.message)
         }
     }
-    const shared = { city,setCity,resorts, getAllResorts, getResortByCity, getResortByDisabled, getResortByPrice, addResort, editResorts, deleteResort }
+    const shared = {resorts, getAllResorts, getResortByCity, getResortByDisabled, getResortByPrice, addResort, editResorts, deleteResort }
     return (
         <resortContext.Provider value={shared}>
             {children}

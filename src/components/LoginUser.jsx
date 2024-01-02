@@ -41,7 +41,7 @@ export default function LoginUser() {
     };
 
     return (
-        <>
+    <>
             <div className='d-flex justify-content-center align-items-center mt-5'>
                 <div className="App-header card" style={{ width: "25rem" }}>
                     <div className='list-group list-group-flush'>
@@ -64,7 +64,7 @@ export default function LoginUser() {
                     </div>
                 </div>
             </div>
-            {/* 
+{/* 
             <div class="overlay">
                 <div class="success" id="message"> </div>
                 <div class="login">
@@ -83,7 +83,7 @@ export default function LoginUser() {
                         </div>
                         </div>
                         </div> */}
-        </>
+                    </>
 
-    )
+                    )
 }

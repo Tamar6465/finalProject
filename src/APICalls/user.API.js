@@ -2,11 +2,11 @@ import axios from "axios";
 
 const baseUrlUser = 'http://localhost:8200/accessiableHeaven/api/v1/';
 
-const registerUser = (data) => {
-    axios.post(`${baseUrlUser}users/register`, data)
+const registerUser = async(data) => {
+    return await axios.post(`${baseUrlUser}users/register`, data)
         .then((response) => {
             console.log(response);
-            return response;
+            return response.data;
         })
         .catch((error) => {
             if (error.response) {
@@ -16,11 +16,11 @@ const registerUser = (data) => {
         });
 }
 
-const registerOwner = (data) => {
-    axios.post(`${baseUrlUser}owners/register`, data)
+const registerOwner = async(data) => {
+    return await  axios.post(`${baseUrlUser}owners/register`, data)
         .then((response) => {
             console.log(response);
-            return response;
+            return response.data;
         })
         .catch((error) => {
             if (error.response) {
@@ -47,10 +47,10 @@ const loginUser = async (data) => {
 
 }
 const loginOwner = async (data) => {
-    axios.post(`${baseUrlUser}owners/login`, data)
+  return await  axios.post(`${baseUrlUser}owners/login`, data)
         .then((response) => {
             console.log(response);
-            return response
+            return response.data
         })
         .catch((error) => {
             if (error.response) {

@@ -127,7 +127,7 @@ export default function ListResort() {
 
     return (
         <div>
-            <MapComponent location={[{ name: "1", lan: 30, lng: 20 }, { name: "2", lan: 25, lng: 35 }]} />
+            {/* <MapComponent locations={[{ name: "1", lan: 30, lng: 20 }, { name: "2", lan: 25, lng: 35 }]} /> */}
             {resorts?.map((resort) => {
                 // getCoordinates(resort.city)
                 return <Resort

@@ -10,7 +10,7 @@ const UserProvider = ({ children }) => {
         console.log(current);
         setUserLogin(current)
     }
-    const shared = { setLogin, users }
+    const shared = { setLogin, users ,userLogin}
     return (
         <userContext.Provider value={shared}>
             {children}
