@@ -161,6 +161,19 @@ exports.getResortByCity = async (req, res, next) => {
         console.error(error);
     }
 };
+exports.getResortById = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const resort = await Resort.find({ id: id }).populate("ownerId");
+        if (!resort) return next(new AppError(400, "resort not exist"));
+        res.status(200).json({
+            status: "success",
+            resort
+        })
+    } catch (error) {
+        console.error(error);
+    }
+};
 exports.getbyPrice = async (req, res, next) => {
     const minPrice = req.query.minPrice;
     const maxPrice = req.query.maxPrice;

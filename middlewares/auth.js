@@ -5,7 +5,6 @@ const { decodeToken } = require("../utils/jwt");
 exports.auth = (role) => {
     return async function (req, res, next) {
         let token = req.headers["authorization"];
-        console.log(token,"11111111111111111111111");
         if (!token) return res.sendStatus(401);
         token = token.split(" ")[1];
         try {
