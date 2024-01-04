@@ -1,17 +1,24 @@
-import axios from "axios";
 import { createContext, useReducer, useState } from "react";
 import resortsReduces from './reduces/resort.reduces'
-import {getResortByIdAPI, addResortAPI, deleteResortAPI, getAllResortsAPI, getResortByCityAPI, getResortByDisabledAPI, getResortByPricedAPI } from "../APICalls/resort.API";
+import { getResortByIdAPI, addResortAPI, deleteResortAPI, getAllResortsAPI, getResortByCityAPI, getResortByDisabledAPI, getResortByPricedAPI } from "../APICalls/resort.API";
 
 const resortContext = createContext({});
 
 const ResortProvider = ({ children }) => {
     const [resorts, dispach] = useReducer(resortsReduces, []);
-    const [selectedResort, setSelectedResort] = useState(null);
-    const selectResort = (resort) => {
-        setSelectedResort(resort);
-    }
 
+    const getAllCitiesResorts = async () => {
+        let cities = [];
+        try {
+            const temp = await getAllResortsAPI();
+            temp.map(resort => {
+                cities.push(resort.city)
+            })
+            return cities;
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
     const getAllResorts = async () => {
         try {
             const temp = await getAllResortsAPI();
@@ -31,7 +38,7 @@ const ResortProvider = ({ children }) => {
     };
     const getResortById = async (id) => {
         try {
-            
+
             const temp = await getResortByIdAPI(id)
             dispach({ type: "GET_RESORTS", payload: temp })
 
@@ -84,7 +91,7 @@ const ResortProvider = ({ children }) => {
             alert("error", err.message)
         }
     }
-    const shared = {getResortById, resorts, getAllResorts, getResortByCity, getResortByDisabled, getResortByPrice, addResort, editResorts, deleteResort }
+    const shared = { getAllCitiesResorts, getResortById, resorts, getAllResorts, getResortByCity, getResortByDisabled, getResortByPrice, addResort, editResorts, deleteResort }
     return (
         <resortContext.Provider value={shared}>
             {children}

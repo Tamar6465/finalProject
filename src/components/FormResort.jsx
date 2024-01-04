@@ -42,7 +42,7 @@ export default function FormResort() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+        console.log(formData.images);
         // ניתן להוסיף פה לוגיקת שליחת הטופס לשרת או לעשות משהו אחר
         console.log('Form submitted:', formData);
 
