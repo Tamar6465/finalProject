@@ -11,6 +11,7 @@ import ContactUs from './components/ContactUs'
 import Resort from './components/Resort'
 import Order from './components/Order'
 import Owner from './components/Owner'
+import Account from './components/Account'
 function App() {
 
   return (
@@ -28,7 +29,9 @@ function App() {
             <Route path='/contactUs' element={<ContactUs />} />
             <Route path='/resort' element={<Resort />} />
             <Route path='/order' element={<Order />} />
+            <Route path='/order/:id' element={<Order />} />
             <Route path='/owner' element={<Owner />} />
+            <Route path='/account' element={<Account />} />
           </Routes>
         </BrowserRouter>
     </>

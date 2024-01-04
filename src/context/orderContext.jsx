@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createContext, useReducer, useState } from "react";
 import orderReduces from "./reduces/order.reduces";
-import {getAllOrdersAPI,getOrderByIdAPI,getOrderByUserIdAPI,addOrderAPI,editOrderAPI,deleteOrderAPI} from "../APICalls/order.API";
+import { getAllOrdersAPI, getOrderByIdAPI, getOrderByUserIdAPI, addOrderAPI, editOrderAPI, deleteOrderAPI } from "../APICalls/order.API";
 
 const orderContext = createContext({});
 
@@ -11,7 +11,7 @@ const OrderProvider = ({ children }) => {
     const selectOrder = (order) => {
         setSelectedOrder(order);
     }
-    
+
 
     const getAllorders = async () => {
         try {
@@ -38,15 +38,17 @@ const OrderProvider = ({ children }) => {
             console.log(error.message);
         }
     };
-  
-   
-    const addOrder = (order) => {
+
+
+    const addOrder = async (order) => {
         try {
-            addOrderAPI(order)
-            dispach({ type: "ADD_ORDER", payload: resort })
+            const tmp = await addOrderAPI(order)
+            dispach({ type: "ADD_ORDER", payload: tmp })
+            return tmp;
 
         } catch (error) {
-            alert("error", err.message)
+            console.log("error in add", error.message);
+            alert("error", error.message)
         }
     }
     const editOrder = (updateOrder, id) => {
@@ -54,7 +56,7 @@ const OrderProvider = ({ children }) => {
             dispach({ type: "EDIT_ORDER", payload: { updateOrder, id } })
 
         } catch (error) {
-            alert("error", err.message)
+            alert("error", error.message)
         }
     }
 
@@ -63,15 +65,15 @@ const OrderProvider = ({ children }) => {
             deleteOrderAPI(id);
             dispach({ type: "DELETE_ORDER", payload: id })
 
-        } catch (error) {
+        } catch (err) {
             alert("error", err.message)
         }
     }
-    const shared = { getAllorders,getOrderById,getOrderByUserId,addOrder,deleteOrder,editOrder}
+    const shared = { orders, selectedOrder, getAllorders, getOrderById, getOrderByUserId, addOrder, deleteOrder, editOrder }
     return (
-        <OrderProvider.Provider value={shared}>
+        <orderContext.Provider value={shared}>
             {children}
-        </OrderProvider.Provider>
+        </orderContext.Provider>
     )
 }
 export default OrderProvider

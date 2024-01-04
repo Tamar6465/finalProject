@@ -1,16 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
+// import React, { useContext, useEffect, useState } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useNavigate, useParams } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
-import SweetAlert from 'react-bootstrap-sweetalert';  // Import SweetAlert
 import { resortContext } from '../context/resortContext';
-// import Paypal from './Paypal';
-// import 'bootstrap/dist/css/bootstrap.min.css';  
+import Paypal from './Paypal';
+import { orderContext } from '../context/orderContext';
+import { userContext } from '../context/userContext';
+// import 'bootstrap/dist/css/bootstrap.min.css';  // Import Bootstrap CSS
+import { Modal, Button } from 'react-bootstrap';  // Import Bootstrap Modal and Button
+import { useContext } from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+
 export default function Resort() {
     const { id } = useParams();
     const { resorts, getResortById } = useContext(resortContext);
+    const { userLogin } = useContext(userContext);
+    const { orders, addOrder } = useContext(orderContext);
 
     useEffect(() => {
         getResortById(id)
@@ -19,10 +26,13 @@ export default function Resort() {
     const localizer = momentLocalizer(moment);
     const [selectedDates, setSelectedDates] = useState([]);
     const navigate = useNavigate()
-    const [showAlert, setShowAlert] = useState(false);  // State to control SweetAlert
+    const [showModal, setShowModal] = useState(false);  // State to control Bootstrap Modal
+    const [showAlertPaypal, setShowAlertPaypal] = useState(false);  // State to control SweetAlert
     const today = new Date().toISOString().split('T')[0];
+    const tomorrow = new Date(today);
+tomorrow.setDate(new Date(today).getDate() + 1);
     const [startDate, setStartDate] = useState(today);
-    const [endDate, setEndDate] = useState(today);
+    const [endDate, setEndDate] = useState(tomorrow.toISOString().split('T')[0]);
 
     const handleStartDateChange = (event) => {
         const dateValue = event.target.value;
@@ -33,16 +43,44 @@ export default function Resort() {
         const dateValue = event.target.value;
         setEndDate(dateValue);
     };
+
     const order = () => {
-        // Show SweetAlert when the "order" button is clicked
-        setShowAlert(true);
+        // Show Bootstrap Modal when the "order" button is clicked
+        setShowModal(true);
     };
 
-    const closeAlert = () => {
-        // Close SweetAlert
-        setShowAlert(false);
-        navigate("/order")
+    const closeModal = () => {
+        // Close Bootstrap Modal
+        setShowModal(false);
+
     };
+
+    const orderAndCloseModal = () => {
+        // Close Bootstrap Modal and perform order-related actions
+        setShowModal(false);
+        setShowAlertPaypal(true);
+
+    };
+
+    const closePaypalModal = () => {
+        // Close SweetAlert
+        setShowAlertPaypal(false);
+        const orderTemp = {
+            dateOrder: new Date(),
+            dateStart: startDate,
+            dateEnd: endDate,
+            sumOrder: Number.parseInt(resort.price) * Number.parseInt(selectedDates.length),
+            resortId: resort.id,
+            userId: userLogin.id
+                }
+        console.log(orderTemp);
+    //    const order= addOrder(orderTemp);
+
+    //    console.log({order})
+        navigate(`/order`,{state:{orderTemp}});
+
+    };
+   
 
     return (
         <>
@@ -55,9 +93,11 @@ export default function Resort() {
                 <h4>{resort.adress}</h4>
                 <h4>Adapted to: {resort.disabilities}</h4>
                 <p>{resort.description}</p>
+                <p>{resort.price}</p>
                 <p>צור קשר :</p>
-                <h3>{resort.ownerId.name}</h3>
-                <h3>{resort.ownerId.phone}</h3>
+                <p>{resort.ownerId.name}</p>
+                <p>{resort.ownerId.phone}</p>
+
                 <div>
 
                     <Calendar
@@ -90,7 +130,6 @@ export default function Resort() {
                         }}
                     />
 
-
                     <div>
                         <h4>Selected Dates:</h4>
                         <ul>
@@ -102,33 +141,56 @@ export default function Resort() {
 
                 </div>
                 <button onClick={order}>order</button>
-                <SweetAlert
-                    show={showAlert}
-                    title="Order Details"
-                    showCancelButton
-                    onCancel={closeAlert}
-                >
 
-                    <label>Start Date:</label>
-                    <input
-                        type='date'
-                        name='startDate'
-                        placeholder='0/0/0'
-                        value={startDate}
-                        onChange={handleStartDateChange}
-                    />
+                {/* Bootstrap Modal for Order Details */}
+                <Modal show={showModal} onHide={closeModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Order Details</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {/* Your order details input fields */}
+                        <label>Start Date:</label>
+                        <input
+                            type='date'
+                            name='startDate'
+                            placeholder='0/0/0'
+                            value={startDate}
+                            onChange={handleStartDateChange}
+                        />
 
-                    <label>End Date:</label>
-                    <input
-                        type='date'
-                        name='endDate'
-                        placeholder='0/0/0'
-                        min={startDate}
-                        value={endDate}
-                        onChange={handleEndDateChange}
-                    />
-                    {/* <Paypal /> */}
-                </SweetAlert>
+                        <label>End Date:</label>
+                        <input
+                            type='date'
+                            name='endDate'
+                            placeholder={today}
+                            min={startDate}
+                            value={endDate}
+                            onChange={handleEndDateChange}
+                        />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={closeModal}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={orderAndCloseModal} >
+                            Order
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <Modal show={showAlertPaypal} onHide={closePaypalModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>PayPal</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Paypal />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={closePaypalModal}>
+                            Close
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
 
             </div>
         </>

@@ -1,29 +1,31 @@
 import axios from "axios";
 
-const baseURLResort = "http://localhost:8200/accessiableHeaven/api/v1/orders";
+const baseURLOrders = "http://localhost:8200/accessiableHeaven/api/v1/orders";
 
 const getAllOrdersAPI = async () => {
-    const res = await axios.get(`${baseURLResort}/getAll`,{
+    const res = await axios.get(`${baseURLOrders}/getAll`,{
         headers: {
             'authorization': `bearer ${localStorage.getItem("tokenUser")}`
         }
     });
-    const temp = res.data.resorts;
+    const temp = res.data.orders;
     return temp;
 }
-const addOrderAPI = (order) => {
-    axios.post(`${baseURLResort}/addOrder`, order ,{
+const addOrderAPI = async(order) => {
+    console.log(order);
+   return await axios.post(`${baseURLOrders}/addOrder`, order ,{
         headers: {
             'authorization': `bearer ${localStorage.getItem("tokenUser")}`
         }
     }).
         then((res) => {
             alert("add succesfully", res)
-        })
+            return res.data;
+        }).catch((err)=>{console.log(err.message,"err in ada api");})
 }
 const editOrderAPI = (order, id) => {
     
-    axios.put(`${baseURLResort}/updateOrder/${id}`, order,{
+    axios.put(`${baseURLOrders}/updateOrder/${id}`, order,{
         headers: {
             'authorization': `bearer ${localStorage.getItem("tokenUser")}`
         }
@@ -33,7 +35,7 @@ const editOrderAPI = (order, id) => {
     })
 }
 const deleteOrderAPI = (id) => {
-    axios.delete(`${baseURLResort}/deleteOrder/${id}`,{
+    axios.delete(`${baseURLOrders}/deleteOrder/${id}`,{
         headers: {
             'authorization': `bearer ${localStorage.getItem("tokenUser")}`
         }
@@ -43,21 +45,21 @@ const deleteOrderAPI = (id) => {
         })
 }
 const getOrderByIdAPI = async (id) => {
-    const res = await axios.get(`${baseURLResort}/getOrder/${id}`,{
+    const res = await axios.get(`${baseURLOrders}/getOrder/${id}`,{
         headers: {
             'authorization': `bearer ${localStorage.getItem("tokenUser")}`
         }
     });
-    const temp = await res.json();
+    const temp = res.data.order;
     return temp;
 }
 const getOrderByUserIdAPI = async (userId) => {
-    const res = await axios.get(`${baseURLResort}/getOrderByUserId/${userId}`,{
+    const res = await axios.get(`${baseURLOrders}/getOrderByUserId/${userId}`,{
         headers: {
             'authorization': `bearer ${localStorage.getItem("tokenUser")}`
         }
     });
-    const temp = await res.json();
+    const temp = res.data.orders;
     return temp;
 }
 export {getAllOrdersAPI,getOrderByIdAPI,getOrderByUserIdAPI,addOrderAPI,editOrderAPI,deleteOrderAPI}

@@ -1,7 +1,12 @@
-import React from 'react'
-import {Link} from "react-router-dom"
+import React, { useEffect } from 'react'
+import {Link, Outlet} from "react-router-dom"
 
 export default function NavBar() {
+  useEffect(() => {
+    if (JSON.parse( sessionStorage.getItem('tokenUser')) ===null) {
+          navigate(`/`);
+     }
+  }, [])
   return (
     <div>
  <nav>
@@ -13,10 +18,16 @@ export default function NavBar() {
               <Link to="/about">About</Link>
             </li>
             <li>
-              <Link to="/contact">Contact</Link>
+              <Link to="/account">Contact</Link>
             </li>
+            <li>
+            <li class="li" id="logout"><Link to="/" onClick={() => { localStorage.clear() }}>LogOut</Link></li>
+            </li>
+           
           </ul>
         </nav>
-            </div>
+        <Outlet/>
+
+    </div>
   )
 }

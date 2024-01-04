@@ -23,6 +23,7 @@ export default function LoginUser() {
         const { token, user } = await loginUser(data);
         console.log(token, user);
         localStorage.setItem("tokenUser", token)
+        
         setLogin(user);
     }
     useEffect(() => {

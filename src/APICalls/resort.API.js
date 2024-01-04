@@ -47,7 +47,7 @@ const getResortByCityAPI = async (city) => {
             'authorization': `bearer ${localStorage.getItem("tokenUser")}`
         }
     });
-    const temp = await res.json();
+    const temp = await res.data.resort;
     return temp;
 }
 const getResortByIdAPI = async (id) => {
@@ -57,7 +57,7 @@ const getResortByIdAPI = async (id) => {
         }
     });
     
-    const temp = await res.json();
+    const temp = await res.data.resort;
     return temp;
 }
 const getResortByDisabledAPI = async (disability) => {
@@ -75,7 +75,7 @@ const getResortByPricedAPI = async (minPrice, maxPrice) => {
             'authorization': `bearer ${localStorage.getItem("tokenUser")}`
         }
     });
-    const temp = await res.json();
+    const temp = await res.data.resort;
     return temp;
 }
 
