@@ -23,6 +23,7 @@ export default function Resort() {
         getResortById(id)
     }, []);
     const resort = resorts[0];
+    console.log(resort.ownerId);
     const localizer = momentLocalizer(moment);
     const [selectedDates, setSelectedDates] = useState([]);
     const navigate = useNavigate()
