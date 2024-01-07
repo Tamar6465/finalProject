@@ -14,7 +14,7 @@ router.post("/addResort", auth(), addResort);
 router.put("/updateResort/:id", auth(), updateResort);
 router.delete("/deleteResort/:id", auth(), deleteResort)
 
-router.post('/upload', upload.array('images', 5), function (req, res) {
+router.post('/upload', upload.array('images', 15), function (req, res) {
     const files = req.files;
     console.log(req.files);
     if (!files || files.length === 0) {
@@ -55,7 +55,7 @@ router.post('/upload', upload.array('images', 5), function (req, res) {
 
 
 
-// upload.single('image'), function (req, res) {
+// router.post('/upload', upload.single('image'), function (req, res) {
 //     console.log("-----------------------------", req.file.path);
 //     cloudinary.uploader.upload(req.file.path, function (err, result) {
 //         if (err) {

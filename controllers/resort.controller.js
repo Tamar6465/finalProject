@@ -51,42 +51,6 @@ exports.addResort = async (req, res, next) => {
         if (validate.error) {
             throw Error(validate.error);
         }
-        // const files = req.files;
-
-        // if (!files || files.length === 0) {
-        //     return res.status(400).json({
-        //         success: false,
-        //         message: "No files uploaded."
-        //     });
-        // }
-        // const uploadPromises = files.map(file => {
-        //     return new Promise((resolve, reject) => {
-        //         cloudinary.uploader.upload(file.path, function (err, result) {
-        //             if (err) {
-        //                 console.log("err------", err);
-        //                 reject(err);
-        //             } else {
-        //                 resolve(result);
-        //             }
-        //         });
-        //     });
-        // });
-
-        // Promise.all(uploadPromises)
-        //     .then(results => {
-        //         res.status(200).json({
-        //             success: true,
-        //             message: "Uploaded!",
-        //             data: results
-        //         });
-        //     })
-        //     .catch(error => {
-        //         res.status(500).json({
-        //             success: false,
-        //             message: "Error uploading files.",
-        //             error: error.message
-        //         });
-        //     });
         const newResort = new Resort(body);
         await newResort.save();
         //* generate token
