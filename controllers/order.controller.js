@@ -192,7 +192,7 @@ exports.getOrder=async(req,res,next)=>{
 exports.getOrderByUserId=async(req,res,next)=>{
     try {
         const {userId}=req.params;
-        const orders=await Order.findOne({userId:userId}).populate("resortId").populate("userId");
+        const orders=await Order.find({userId:userId}).populate("resortId").populate("userId");
         if (!orders) return next(new AppError(400, "resort not exist"));
 
         return res.status(200).send({

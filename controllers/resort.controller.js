@@ -153,6 +153,9 @@ exports.getResortByCity = async (req, res, next) => {
     try {
         const resort = await Resort.find({ city: city }).populate("ownerId");
         if (!resort) return next(new AppError(400, "resort not exist"));
+        if (city === "''") {
+            resort = await Resort.find({}).populate("ownerId");
+        }
         res.status(200).json({
             status: "success",
             resort
