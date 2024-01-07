@@ -77,9 +77,7 @@ exports.addOrder = async (req, res, next) => {
             throw new Error("Date range is already occupied");
         }
     const occupiedDates= await this.datTokenForResort(resortId);
-    console.log(occupiedDates,resortId);
          const update=await Resort.updateOne({id:resortId},{events:occupiedDates})
-         console.log(update);
         const newOrder = new Order(body);
         await newOrder.save();
 
@@ -90,7 +88,6 @@ exports.addOrder = async (req, res, next) => {
 };
 exports.datTokenForResort=async(resortId)=>{
     const orders = await Order.find({ resortId: resortId }).populate("resortId");
-console.log(orders,"kjahfkjasflkjsa");
     const occupiedDates = orders.reduce((acc, order) => {
         const startDate = new Date(order.dateStart);
         const endDate = new Date(order.dateEnd);
