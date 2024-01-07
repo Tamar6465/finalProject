@@ -1,11 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { resortContext } from '../context/resortContext';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import UpImage from './UpImage';
 
 export default function FormResort() {
-    const { resorts, addResort } = useContext(resortContext);
-
+    const { addResort } = useContext(resortContext)
     const [formData, setFormData] = useState({
         name: '',
         images: [],
@@ -31,65 +30,32 @@ export default function FormResort() {
     };
 
     const handleImageChange = (e) => {
-        const files = e.target.files;
-
-        if (files) {
+        const file = e;
+        if (file) {
             setFormData((prevFormData) => ({
                 ...prevFormData,
-                images: [...prevFormData.images, ...files],
+                images: [...prevFormData.images, file],
             }));
         }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    
-       // addResort(formData);
+        formData.images = formData.images[0];
+        addResort(formData);
         // navigate("/owner");
     };
-    const handleUpload = async (file) => {
-        console.log(file);
-        if (!file) {
-            console.error('No file selected');
-            return;
-        }
 
-        const formData = new FormData();
-        formData.append('image', file);
-
-        try {
-            const response = await fetch('http://localhost:8200/accessiableHeaven/api/v1/resorts/upload', {
-                method: 'POST',
-                body: formData,
-            });
-
-            if (response.ok) {
-                console.log("koko");
-                const result = await response.json();
-                console.log(result);
-                return result.data.secure_url;
-            } else {
-                console.error('Image upload failed');
-            }
-        } catch (error) {
-            console.error('Error uploading image:', error);
-        }
-    }
     return (
         <form onSubmit={handleSubmit}>
             <div>
                 <label>שם האתר:</label>
                 <input type="text" name="name" value={formData.name} onChange={handleChange} />
             </div>
-            <div>
-                <input type="file" accept="image/*" name="images" onChange={handleImageChange} multiple />
-                {formData.images.map((image, index) => (
-                    <div key={index}>
-                        <img src={URL.createObjectURL(image)} alt={`Selected ${index + 1}`} style={{ maxWidth: '100%' }} />
-                    </div>
-                ))}
-            </div>
-           
+
+            <UpImage handleImage={handleImageChange} formData={formData} setFormData={setFormData} />
+
+
             <div>
                 <label>מחיר:</label>
                 <input type="text" name="price" value={formData.price} onChange={handleChange} />
