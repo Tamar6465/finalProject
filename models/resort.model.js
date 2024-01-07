@@ -49,9 +49,9 @@ const resortSchema = new Schema({
         type: Number,
         required: true
     },
-    events:{
-        type:[],
-        required:false
+    events: {
+        type: [],
+        required: false
     },
     ownerId: {
         type: mongoose.Types.ObjectId,
