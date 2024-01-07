@@ -12,8 +12,7 @@ const getAllOrdersAPI = async () => {
     return temp;
 }
 const addOrderAPI = async(order) => {
-    console.log(order);
-   return await axios.post(`${baseURLOrders}/addOrder`, order ,{
+   return  await axios.post(`${baseURLOrders}/addOrder`, order ,{
         headers: {
             'authorization': `bearer ${localStorage.getItem("tokenUser")}`
         }
@@ -50,16 +49,20 @@ const getOrderByIdAPI = async (id) => {
             'authorization': `bearer ${localStorage.getItem("tokenUser")}`
         }
     });
+
     const temp = res.data.order;
     return temp;
 }
 const getOrderByUserIdAPI = async (userId) => {
+    console.log(userId);
+    console.log(`${baseURLOrders}/getOrderByUserId/${userId}`);
     const res = await axios.get(`${baseURLOrders}/getOrderByUserId/${userId}`,{
         headers: {
             'authorization': `bearer ${localStorage.getItem("tokenUser")}`
         }
     });
     const temp = res.data.orders;
+    console.log(temp);
     return temp;
 }
 export {getAllOrdersAPI,getOrderByIdAPI,getOrderByUserIdAPI,addOrderAPI,editOrderAPI,deleteOrderAPI}

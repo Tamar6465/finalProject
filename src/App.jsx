@@ -12,6 +12,7 @@ import Resort from './components/Resort'
 import Order from './components/Order'
 import Owner from './components/Owner'
 import Account from './components/Account'
+import NavBar from './components/NavBar'
 function App() {
 
   return (
@@ -23,15 +24,18 @@ function App() {
             <Route path='/signUpUser' element={<SignUpUser />} />
             <Route path='/loginOwner' element={<LoginOwner />} />
             <Route path='/signUpOwner' element={<SignUpOwner />} />
+           {/* <Route path='/user' element={<NavBar/>}> */}
             <Route path='/listResort' element={<ListResort />} />
             <Route path='/resort/:id' element={<Resort />} />
+            <Route path='/resort' element={<Resort />} />
+            <Route path='/account' element={<Account />} />
+            {/* </Route> */}
+            
             <Route path='/formResort' element={<FormResort />} />
             <Route path='/contactUs' element={<ContactUs />} />
-            <Route path='/resort' element={<Resort />} />
             <Route path='/order' element={<Order />} />
             <Route path='/order/:id' element={<Order />} />
             <Route path='/owner' element={<Owner />} />
-            <Route path='/account' element={<Account />} />
           </Routes>
         </BrowserRouter>
     </>
