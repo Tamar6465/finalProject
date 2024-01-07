@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import { resortContext } from '../context/resortContext'
 import MapComponent from './MapComponent';
 import ResortCard from './ResortCard';
+import NavBar from './NavBar';
+import Account from './Account';
 
 
 // import { useNavigate } from 'react-router-dom';
@@ -27,11 +29,12 @@ export default function ListResort() {
         if (city)
             getResortByCity(city)
         else
-            getResortByCity("''")
+            getAllResorts("''")
     }
 
     return (
         <div>
+            <NavBar/>
             {resorts?.map((resort) => {
                 return <ResortCard
                     resort={resort}

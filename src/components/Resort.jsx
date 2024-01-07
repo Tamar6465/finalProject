@@ -12,18 +12,17 @@ import { Modal, Button } from 'react-bootstrap';  // Import Bootstrap Modal and 
 import { useContext } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import NavBar from './NavBar';
 
 export default function Resort() {
     const { id } = useParams();
     const { resorts, getResortById } = useContext(resortContext);
     const { userLogin } = useContext(userContext);
-    const { orders, addOrder } = useContext(orderContext);
-
+    const {addOrder}=useContext(orderContext);
     useEffect(() => {
         getResortById(id)
     }, []);
     const resort = resorts[0];
-    console.log(resort.ownerId);
     const localizer = momentLocalizer(moment);
     const [selectedDates, setSelectedDates] = useState([]);
     const navigate = useNavigate()
@@ -31,10 +30,16 @@ export default function Resort() {
     const [showAlertPaypal, setShowAlertPaypal] = useState(false);  // State to control SweetAlert
     const today = new Date().toISOString().split('T')[0];
     const tomorrow = new Date(today);
-tomorrow.setDate(new Date(today).getDate() + 1);
+    tomorrow.setDate(new Date(today).getDate() + 1);
     const [startDate, setStartDate] = useState(today);
     const [endDate, setEndDate] = useState(tomorrow.toISOString().split('T')[0]);
-
+    const calculateDays = () => {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const timeDiff = Math.abs(end.getTime() - start.getTime());
+        const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        return daysDiff;
+    };
     const handleStartDateChange = (event) => {
         const dateValue = event.target.value;
         setStartDate(dateValue);
@@ -46,42 +51,45 @@ tomorrow.setDate(new Date(today).getDate() + 1);
     };
 
     const order = () => {
-        // Show Bootstrap Modal when the "order" button is clicked
         setShowModal(true);
     };
 
     const closeModal = () => {
-        // Close Bootstrap Modal
         setShowModal(false);
 
     };
 
     const orderAndCloseModal = () => {
-        // Close Bootstrap Modal and perform order-related actions
         setShowModal(false);
         setShowAlertPaypal(true);
 
     };
-
-    const closePaypalModal = () => {
-        // Close SweetAlert
+   
+    const closePaypalModal = async() => {
         setShowAlertPaypal(false);
         const orderTemp = {
-            dateOrder: new Date(),
+            dateOrder: today,
             dateStart: startDate,
             dateEnd: endDate,
-            sumOrder: Number.parseInt(resort.price) * Number.parseInt(selectedDates.length),
+            sumOrder: Number.parseInt(resort.price) * calculateDays(),
             resortId: resort.id,
             userId: userLogin.id
-                }
-        console.log(orderTemp);
-    //    const order= addOrder(orderTemp);
+        }
+        const tmp = await addOrder(orderTemp)
+        console.log(tmp);
+        if (tmp) {
+            navigate(`/order/${tmp.id}`);
 
-    //    console.log({order})
-        navigate(`/order`,{state:{orderTemp}});
+        }
+        else{
+            alert("פרטי ההזנה שגויים")
+        }
+
+
 
     };
-   
+
+
 
     return (
         <>
@@ -130,20 +138,8 @@ tomorrow.setDate(new Date(today).getDate() + 1);
                             }
                         }}
                     />
-
-                    <div>
-                        <h4>Selected Dates:</h4>
-                        <ul>
-                            {selectedDates.map((date, index) => (
-                                <li key={index}>{date}</li>
-                            ))}
-                        </ul>
-                    </div>
-
                 </div>
                 <button onClick={order}>order</button>
-
-                {/* Bootstrap Modal for Order Details */}
                 <Modal show={showModal} onHide={closeModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Order Details</Modal.Title>
@@ -168,6 +164,8 @@ tomorrow.setDate(new Date(today).getDate() + 1);
                             value={endDate}
                             onChange={handleEndDateChange}
                         />
+                        <p>מספר לילות: {calculateDays()}</p>
+
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={closeModal}>
