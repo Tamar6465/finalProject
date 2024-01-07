@@ -39,13 +39,7 @@ export default function FormResort() {
         }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        formData.images = formData.images[0];
-        addResort(formData);
-        // navigate("/owner");
-    };
-
+  
     return (
         <form onSubmit={handleSubmit}>
             <div>
