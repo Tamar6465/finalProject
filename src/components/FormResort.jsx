@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { resortContext } from '../context/resortContext';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function FormResort() {
     const { resorts, addResort } = useContext(resortContext);
@@ -42,14 +43,38 @@ export default function FormResort() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formData.images);
-        // ניתן להוסיף פה לוגיקת שליחת הטופס לשרת או לעשות משהו אחר
-        console.log('Form submitted:', formData);
-
-        addResort(formData);
-        navigate("/owner");
+    
+       // addResort(formData);
+        // navigate("/owner");
     };
+    const handleUpload = async (file) => {
+        console.log(file);
+        if (!file) {
+            console.error('No file selected');
+            return;
+        }
 
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            const response = await fetch('http://localhost:8200/accessiableHeaven/api/v1/resorts/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (response.ok) {
+                console.log("koko");
+                const result = await response.json();
+                console.log(result);
+                return result.data.secure_url;
+            } else {
+                console.error('Image upload failed');
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
+    }
     return (
         <form onSubmit={handleSubmit}>
             <div>
@@ -57,13 +82,14 @@ export default function FormResort() {
                 <input type="text" name="name" value={formData.name} onChange={handleChange} />
             </div>
             <div>
-                <input type="file" accept="image/*" onChange={handleImageChange} multiple />
+                <input type="file" accept="image/*" name="images" onChange={handleImageChange} multiple />
                 {formData.images.map((image, index) => (
                     <div key={index}>
                         <img src={URL.createObjectURL(image)} alt={`Selected ${index + 1}`} style={{ maxWidth: '100%' }} />
                     </div>
                 ))}
             </div>
+           
             <div>
                 <label>מחיר:</label>
                 <input type="text" name="price" value={formData.price} onChange={handleChange} />
@@ -80,7 +106,6 @@ export default function FormResort() {
                 <label>סוגי נכויות:</label>
                 <select name="accessibility" onChange={event => {
                     handleChange(event)
-                    console.log(event);
                 }}>
                     <option value="visual">visual</option>
                     <option value="hearing">hearing</option>
@@ -92,7 +117,6 @@ export default function FormResort() {
                 <label> קטגוריה:</label>
                 <select name="category" onChange={event => {
                     handleChange(event)
-                    console.log(event);
                 }}>
                     <option value="hotelRoom">hotelRoom</option>
                     <option value="b&b">b&b</option>
