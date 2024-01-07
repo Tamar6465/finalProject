@@ -53,7 +53,6 @@ async function isDateRangeOccupied(resortId, startDate, endDate) {
 }
 
 exports.addOrder = async (req, res, next) => {
-    console.log("jjjjjjjjjjjjjjjjj");
     const body = req.body;
     try {
         const validate = orderJoiSchema.add.validate(body);
@@ -68,12 +67,7 @@ exports.addOrder = async (req, res, next) => {
         if (body.dateStart.getTime() >= body.dateEnd.getTime()) {
             throw new Error("Invalid date range");
         }
-
-        const today = new Date();
-        if (body.dateStart.getTime() <= today.getTime()) {
-            throw new Error("Invalid start date");
-        }
-const resortId=body.resortId;
+        const resortId=body.resortId;
         body.resortId = new Types.ObjectId(body.resortId);
         body.userId = new Types.ObjectId(body.userId);
 
@@ -84,7 +78,7 @@ const resortId=body.resortId;
         }
     const occupiedDates= await this.datTokenForResort(resortId);
     console.log(occupiedDates,resortId);
-         const update=await Resort.updateOne({_id:resortId},{events:occupiedDates})
+         const update=await Resort.updateOne({id:resortId},{events:occupiedDates})
          console.log(update);
         const newOrder = new Order(body);
         await newOrder.save();
@@ -96,8 +90,7 @@ const resortId=body.resortId;
 };
 exports.datTokenForResort=async(resortId)=>{
     const orders = await Order.find({ resortId: resortId }).populate("resortId");
-
-    // Extract and flatten occupied dates from the orders into a single array
+console.log(orders,"kjahfkjasflkjsa");
     const occupiedDates = orders.reduce((acc, order) => {
         const startDate = new Date(order.dateStart);
         const endDate = new Date(order.dateEnd);
@@ -186,7 +179,7 @@ exports.getOrder=async(req,res,next)=>{
     try {
         const {id}=req.params;
         const order=await Order.findOne({id:id}).populate("resortId").populate("userId");
-        if (!order) return next(new AppError(400, "resort not exist"));
+        if (!order) return next(new AppError(400, "order not exist"));
 
         return res.status(200).send({
             status:"success",
