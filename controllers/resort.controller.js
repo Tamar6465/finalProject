@@ -194,11 +194,23 @@ exports.getResortByOwnerId = async (req, res, next) => {
         console.error(error);
     }
 };
+exports.getResortByCategory = async (req, res, next) => {
+    const { cat } = req.params;
+    try {
+        const resorts = await Resort.find({ category: cat }).populate("ownerId");
+        if (!resorts) return next(new AppError(400, "resort not exist"));
+        res.status(200).json({
+            status: "success",
+            resorts
+        })
+    } catch (error) {
+        console.error(error);
+    }
+};
 exports.getbyPrice = async (req, res, next) => {
-    const minPrice = req.query.minPrice;
     const maxPrice = req.query.maxPrice;
     try {
-        const resorts = await Resort.find({ price: { $gte: minPrice, $lte: maxPrice } }).populate("ownerId");
+        const resorts = await Resort.find({ price: { $gte: 0, $lte: maxPrice } }).populate("ownerId");
         if (!resorts) return next(new AppError(400, "resort not exist"));
         res.status(200).json({
             status: "success",
