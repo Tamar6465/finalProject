@@ -43,5 +43,7 @@ export default function ListResort() {
             })}
             <MapComponent cities={cities} callResortsByCities={callResortsByCities} />
         </div>
+        
+        
     )
 }

@@ -23,7 +23,7 @@ export default function LoginUser() {
         const { token, user } = await loginUser(data);
         console.log(token, user);
         localStorage.setItem("tokenUser", token)
-        
+
         setLogin(user);
     }
     useEffect(() => {
@@ -42,30 +42,40 @@ export default function LoginUser() {
     };
 
     return (
-    <>
-            <div className='d-flex justify-content-center align-items-center mt-5'>
-                <div className="App-header card" style={{ width: "25rem" }}>
-                    <div className='list-group list-group-flush'>
-                        <input
-                            placeholder="Email"
-                            name="email"
-                            type="email"
-                            className="input-fields list-group-item m-3"
-                            onChange={event => handleInputs(event)}
-                        />
-                        <input
-                            placeholder="Password"
-                            name="password"
-                            type="password"
-                            className="input-fields list-group-item m-3"
-                            onChange={event => handleInputs(event)}
-                        />
-                        <button className="btn btn-secondary btn-lg btn-block text-info m-3" onClick={login}>Log In User</button>
-                        <button className="btn btn-secondary btn-lg btn-block text-info m-3" onClick={signUp}>Sign Up User</button>
+        <>
+            <div
+                style={{
+                    margin: 0,
+                    height: '100vh',
+                    backgroundImage: 'url("https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1993704_640.jpg")',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                }}
+                className='d-flex justify-content-evenly'
+            >
+                <div className='d-flex justify-content-center align-items-center mt-5'>
+                    <div className="App-header card" style={{ width: "25rem" }}>
+                        <div className='list-group list-group-flush'>
+                            <input
+                                placeholder="Email"
+                                name="email"
+                                type="email"
+                                className="input-fields list-group-item m-3"
+                                onChange={event => handleInputs(event)}
+                            />
+                            <input
+                                placeholder="Password"
+                                name="password"
+                                type="password"
+                                className="input-fields list-group-item m-3"
+                                onChange={event => handleInputs(event)}
+                            />
+                            <button className="btn btn-secondary btn-lg btn-block text-info m-3" onClick={login}>Log In User</button>
+                            <button className="btn btn-secondary btn-lg btn-block text-info m-3" onClick={signUp}>Sign Up User</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-{/* 
+                {/* 
             <div class="overlay">
                 <div class="success" id="message"> </div>
                 <div class="login">
@@ -84,7 +94,7 @@ export default function LoginUser() {
                         </div>
                         </div>
                         </div> */}
-                    </>
-
-                    )
+            </div>
+        </>
+    )
 }
