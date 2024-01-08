@@ -53,9 +53,10 @@ export default function FormResort() {
             style={{
                 margin: 0,
                 height: '100vh',
-                backgroundImage: 'url("https://images.pexels.com/photos/386025/pexels-photo-386025.jpeg")',
+                backgroundImage: 'url("https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1993704_640.jpg")',
                 backgroundSize: 'cover',
-                backgroundPosition: 'center'
+                backgroundPosition: 'center',
+               
             }}
         >
             <form onSubmit={handleSubmit}>
