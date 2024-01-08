@@ -2,18 +2,29 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function Home() {
-const navigate=useNavigate();
+  const navigate = useNavigate();
 
 
   return (
-    <div style={{ 
-      backgroundImage: `url("https://cdn.pixabay.com/photo/2023/12/12/19/08/moutains-8445767_640.jpg")`,
-      backgroundSize: "cover",
-      backgroundAttachment:"fixed"
-    }}>
-        <button onClick={()=>{navigate('/loginUser')}}>Enter as a user</button>
-        <button onClick={()=>{navigate('/loginOwner')}}>Enter as a owner</button>
-        {/* <button onClick={()=>{}}>Enter for me</button>
+    <div
+      style={{
+        margin: 0,
+        height: '100vh',
+        backgroundImage: 'url("https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1993704_640.jpg")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}
+      className='d-flex justify-content-evenly'
+    >
+      <button onClick={() => { navigate('/loginUser') }} className='m-5'>
+        <h3>Enter as a User</h3>
+        <img alt='Enter as a User' src='https://res.cloudinary.com/dbjxvogfh/image/upload/v1704704125/%D7%A6%D7%99%D7%9C%D7%95%D7%9D_%D7%9E%D7%A1%D7%9A_2024-01-08_105511_mqvh2o.png' />
+      </button>
+      <button onClick={() => { navigate('/loginOwner') }} className='m-5'>
+        <h3>Enter as a Owner</h3>
+        <img alt='Enter as a Owner' src='https://res.cloudinary.com/dbjxvogfh/image/upload/v1704704651/manager_owk7tk.png' />
+      </button>
+      {/* <button onClick={()=>{}}>Enter for me</button>
         <button onClick={()=>{navigate('/contactUs')}}>Contact Us</button> */}
     </div>
   )

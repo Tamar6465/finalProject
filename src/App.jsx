@@ -17,27 +17,27 @@ function App() {
 
   return (
     <>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/loginUser' element={<LoginUser />} />
-            <Route path='/signUpUser' element={<SignUpUser />} />
-            <Route path='/loginOwner' element={<LoginOwner />} />
-            <Route path='/signUpOwner' element={<SignUpOwner />} />
-           {/* <Route path='/user' element={<NavBar/>}> */}
-            <Route path='/listResort' element={<ListResort />} />
-            <Route path='/resort/:id' element={<Resort />} />
-            <Route path='/resort' element={<Resort />} />
-            <Route path='/account' element={<Account />} />
-            {/* </Route> */}
-            
-            <Route path='/formResort' element={<FormResort />} />
-            <Route path='/contactUs' element={<ContactUs />} />
-            <Route path='/order' element={<Order />} />
-            <Route path='/order/:id' element={<Order />} />
-            <Route path='/owner' element={<Owner />} />
-          </Routes>
-        </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/loginUser' element={<LoginUser />} />
+          <Route path='/signUpUser' element={<SignUpUser />} />
+          <Route path='/loginOwner' element={<LoginOwner />} />
+          <Route path='/signUpOwner' element={<SignUpOwner />} />
+          {/* <Route path='/user' element={<NavBar/>}> */}
+          <Route path='/listResort' element={<ListResort />} />
+          <Route path='/resort/:id' element={<Resort />} />
+          <Route path='/resort' element={<Resort />} />
+          <Route path='/account' element={<Account />} />
+          {/* </Route> */}
+
+          <Route path='/formResort' element={<FormResort />} />
+          <Route path='/contactUs' element={<ContactUs />} />
+          <Route path='/order' element={<Order />} />
+          <Route path='/order/:id' element={<Order />} />
+          <Route path='/owner' element={<Owner />} />
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }

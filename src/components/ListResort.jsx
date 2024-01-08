@@ -33,15 +33,17 @@ export default function ListResort() {
     }
 
     return (
-        <div>
-            <NavBar/>
+        <>
+        <NavBar/>
+        <div className='d-flex flex-wrap'>
+            <MapComponent cities={cities} callResortsByCities={callResortsByCities} className='w-100'/>
             {resorts?.map((resort) => {
                 return <ResortCard
                     resort={resort}
                     key={resort.id}
                 />
             })}
-            <MapComponent cities={cities} callResortsByCities={callResortsByCities}/>
         </div>
+        </>
     )
 }

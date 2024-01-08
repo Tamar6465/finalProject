@@ -35,6 +35,16 @@ export default function SignUpOwner() {
 
 
     return (
+        <div
+        style={{
+          margin: 0,
+          height: '100vh',
+          backgroundImage: 'url("https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1993704_640.jpg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+        className='d-flex justify-content-evenly'
+      >
         <div className='d-flex justify-content-center align-items-center mt-5'>
             <div className="App-header card" style={{ width: "25rem" }}>
                 <div className='list-group list-group-flush'>
@@ -70,6 +80,6 @@ export default function SignUpOwner() {
                 </div>
             </div>
         </div>
-
+</div>
     )
 }
