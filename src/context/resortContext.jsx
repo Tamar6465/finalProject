@@ -1,6 +1,6 @@
 import { createContext, useReducer, useState } from "react";
 import resortsReduces from './reduces/resort.reduces'
-import { getResortByIdAPI, addResortAPI, deleteResortAPI, getAllResortsAPI, getResortByCityAPI, getResortByDisabledAPI, getResortByPricedAPI } from "../APICalls/resort.API";
+import { getResortByIdAPI, getResortByOwnerIdAPI, addResortAPI, deleteResortAPI, getAllResortsAPI, getResortByCityAPI, getResortByDisabledAPI, getResortByPricedAPI } from "../APICalls/resort.API";
 
 const resortContext = createContext({});
 
@@ -40,6 +40,16 @@ const ResortProvider = ({ children }) => {
         try {
 
             const temp = await getResortByIdAPI(id)
+            dispach({ type: "GET_RESORTS", payload: temp })
+
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+    const getResortByOwnerId = async (id) => {
+        try {
+
+            const temp = await getResortByOwnerIdAPI(id)
             dispach({ type: "GET_RESORTS", payload: temp })
 
         } catch (error) {
@@ -91,7 +101,7 @@ const ResortProvider = ({ children }) => {
             alert("error", err.message)
         }
     }
-    const shared = { getAllCitiesResorts, getResortById, resorts, getAllResorts, getResortByCity, getResortByDisabled, getResortByPrice, addResort, editResorts, deleteResort }
+    const shared = { getAllCitiesResorts,getResortByOwnerId, getResortById, resorts, getAllResorts, getResortByCity, getResortByDisabled, getResortByPrice, addResort, editResorts, deleteResort }
     return (
         <resortContext.Provider value={shared}>
             {children}

@@ -34,13 +34,7 @@ export default function OrderList({props}) {
             <Card.Text>
               <strong>Order Amount:</strong> {order.sumOrder}
             </Card.Text>
-            <Card.Text>
-              {/* <strong>Resort ID:</strong> {order.resortId.name} */}
-            </Card.Text>
-            <Card.Text>
-              {/* <strong>User ID:</strong> {order.userId.name} */}
-            </Card.Text>
-            {/* Add more details as needed */}
+          
           </Card.Body>
         </Card>
       </Col>
