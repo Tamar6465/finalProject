@@ -1,6 +1,8 @@
 import React from 'react'
 import { Carousel } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { Grid, Card, CardMedia, CardContent, Typography, CardActions, Button } from '@mui/material';
+
 
 export default function ResortCard({ resort }) {
     const navigate = useNavigate();
@@ -9,19 +11,30 @@ export default function ResortCard({ resort }) {
     }
 
     return (
-        <div className="card w-25 m-5 my-card">
-            <Carousel>
-                {resort.images.map((image, index) => (
-                    <Carousel.Item key={index}>
-                        <img className="d-block w-100" src={image} alt={`Slide ${index}`} />
-                    </Carousel.Item>
-                ))}
-            </Carousel>
-            <div className="card-body">
-                <h5 className="card-title">{resort.name}</h5>
-                <p className="card-text">{resort.adress}</p>
-                <button onClick={moreDetials} className="btn btn-primary">more...</button>
-            </div>
-        </div>
+        <>
+                    <Card sx={{ maxWidth: 345 }} className='w-25 m-5 my-card'>
+                        <CardMedia sx={{ height: 140 }}>
+                            <Carousel>
+                                {resort.images.map((image, index) => (
+                                    <Carousel.Item key={index}>
+                                        <img className="d-block w-100" src={image} alt={`Slide ${index}`} />
+                                    </Carousel.Item>
+                                ))}
+                            </Carousel>
+                        </CardMedia>
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Lizard
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                <h5>{resort.name}</h5>
+                                <h5>{resort.adress}</h5>
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <Button onClick={moreDetials} className='btn btn-primary' size="big">more...</Button>
+                        </CardActions>
+                    </Card>
+        </>
     )
 }
