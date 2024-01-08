@@ -35,15 +35,17 @@ export default function ListResort() {
         <div>
             <NavBar />
             <button onClick={() => { getResortByDisabled(userLogin.disabled) }}>סנן לפי הנכות שלי:</button>
-            {resorts?.map((resort) => {
-                return <ResortCard
-                    resort={resort}
-                    key={resort.id}
-                />
-            })}
-            <MapComponent cities={cities} callResortsByCities={callResortsByCities} />
+            <div className='d-flex flex-wrap'>
+                <MapComponent cities={cities} callResortsByCities={callResortsByCities} />
+                {resorts?.map((resort) => {
+                    return <ResortCard
+                        resort={resort}
+                        key={resort.id}
+                    />
+                })}
+            </div>
         </div>
-        
-        
+
+
     )
 }

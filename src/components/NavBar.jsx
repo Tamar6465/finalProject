@@ -10,7 +10,7 @@ export default function NavBar() {
     //  }  
   }, [])
   return (
-    <div className='bg-secondary-subtle'>
+    <div className='bg-danger'>
       <nav className='mb-5'>
         <ul className='d-flex list-unstyled align-items-center'>
           <li className='m-2'>

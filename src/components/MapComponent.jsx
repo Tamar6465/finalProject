@@ -12,7 +12,7 @@ const MapComponent = ({ cities, callResortsByCities }) => {
                     const response = await axios.get(
                         `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
                             city
-                        )}&key=321dd59dd67c4a1ea2a115cfcb7b03fd`
+                        )}&key=c539839f9040453cbabdc61cf01e3bb8`
                     );
                     const data = response.data;
                     if (data.results.length > 0) {
