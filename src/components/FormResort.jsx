@@ -38,7 +38,15 @@ export default function FormResort() {
             }));
         }
     };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // ניתן להוסיף פה לוגיקת שליחת הטופס לשרת או לעשות משהו אחר
+        // formData.images.push(selectedImage);
+        // console.log('Form submitted:', formData);
 
+        addResort(formData);
+        navigate("/Owner")
+    };
   
     return (
         <form onSubmit={handleSubmit}>
@@ -101,7 +109,7 @@ export default function FormResort() {
                 <label>טלפון:</label>
                 <input type="text" name="phone" value={formData.phone} onChange={handleChange} />
             </div>
-            <button type="submit">שלח</button>
+            <button type="submit">הוספה</button>
         </form>
     );
 };

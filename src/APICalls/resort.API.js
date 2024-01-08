@@ -59,6 +59,15 @@ const getResortByOwnerIdAPI = async (id) => {
     const temp = await res.data.resorts;
     return temp;
 }
+const getResortByCategoryAPI = async (cat) => {
+    const res = await axios.get(`${baseURLResort}/getByCategory/${cat}`,{
+        headers: {
+            'authorization': `bearer ${localStorage.getItem("tokenUser")}`
+        }
+    });
+    const temp = await res.data.resorts;
+    return temp;
+}
 const getResortByIdAPI = async (id) => {
     const res = await axios.get(`${baseURLResort}/getById/${id}`,{
         headers: {
@@ -78,14 +87,14 @@ const getResortByDisabledAPI = async (disability) => {
     const temp = await res.data.resort;
     return temp;
 }
-const getResortByPricedAPI = async (minPrice, maxPrice) => {
-    const res = await axios.get(`${baseURLResort}/getResortByPrice?minPrice=${minPrice}&maxPrice=${maxPrice}`,{
+const getResortByPricedAPI = async ( maxPrice) => {
+    const res = await axios.get(`${baseURLResort}/getResortByPrice?maxPrice=${maxPrice}`,{
         headers: {
             'authorization': `bearer ${localStorage.getItem("tokenUser")}`
         }
     });
-    const temp = await res.data.resort;
+    const temp = await res.data.resorts;
     return temp;
 }
 
-export { getResortByOwnerIdAPI, getResortByIdAPI, deleteResortAPI, getAllResortsAPI, getResortByCityAPI, getResortByDisabledAPI, getResortByPricedAPI, addResortAPI,editResortsAPI }
+export { getResortByOwnerIdAPI,getResortByCategoryAPI, getResortByIdAPI, deleteResortAPI, getAllResortsAPI, getResortByCityAPI, getResortByDisabledAPI, getResortByPricedAPI, addResortAPI,editResortsAPI }

@@ -1,14 +1,15 @@
-import React, { useContext } from 'react'
-import { useParams } from 'react-router-dom';
+import React, { useContext ,useState,useEffect} from 'react'
+import { Carousel } from 'react-bootstrap';
+import { useParams  } from 'react-router-dom';
 import { resortContext } from '../context/resortContext';
 
-export default function ResortListForOwner() {
-    const { id } = useParams();
+export default function ResortListForOwner(props) {
+    const { resort } = props;
     const { resorts, getResortById } = useContext(resortContext);
+    const [showEvents,SetShowEvents]=useState(false)
     useEffect(() => {
-        getResortById(id)
     }, []);
-    const resort=resorts;
+
   return (
     <div>
     <div className="card" >
@@ -23,6 +24,8 @@ export default function ResortListForOwner() {
             <h5 className="card-title">{resort.name}</h5>
             <p className="card-text">{resort.adress}</p>
         </div>
+        <button onClick={()=>{SetShowEvents(!showEvents)}}>תציג\תסתיר את כל התאריכים המלאים</button>
+        {showEvents&&resort.events.map(event=><p>{event}</p>)}
     </div>
 </div>  )
 }

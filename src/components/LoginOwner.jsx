@@ -32,7 +32,7 @@ export default function LoginOwner() {
     useEffect(() => {
         console.log(userLogin);
         if (userLogin?.email) {
-            navigate('/formResort');
+            navigate('/owner');
         }
 
     }, [userLogin])
