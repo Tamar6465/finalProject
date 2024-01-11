@@ -76,13 +76,13 @@ export default function ListResort() {
                 </div>
                 <button onClick={() => { getResortByDisabled(userLogin.disabled) }}>סנן לפי הנכות שלי:</button>
             </div>
+            <MapComponent cities={cities} callResortsByCities={callResortsByCities} />
             {resorts?.map((resort) => {
                 return <ResortCard
                     resort={resort}
                     key={resort.id}
                 />
             })}
-            <MapComponent cities={cities} callResortsByCities={callResortsByCities} />
         </div>
 
 

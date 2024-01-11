@@ -27,8 +27,8 @@ export default function ResortCard({ resort }) {
                                 Lizard
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                <h5>{resort.name}</h5>
-                                <h5>{resort.adress}</h5>
+                               {resort.name}
+                                {resort.adress}
                             </Typography>
                         </CardContent>
                         <CardActions>
