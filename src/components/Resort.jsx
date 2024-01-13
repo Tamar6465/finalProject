@@ -93,6 +93,7 @@ export default function Resort() {
 
     return (
         <>
+        <NavBar/>
             <div>
                 {resort.images?.map((image, index) => {
                     return <img src={image} key={index} style={{ width: "20px", height: "20px" }} />

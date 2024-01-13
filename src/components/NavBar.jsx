@@ -10,31 +10,58 @@ export default function NavBar() {
     //  }  
   }, [])
   return (
-    <div className='bg-danger'>
-      <nav className='mb-5'>
-        <ul className='d-flex list-unstyled align-items-center'>
-          <li className='m-2'>
-            <Link to="/" className='text-dark'>
-              <img className='w-75' src='https://res.cloudinary.com/dbjxvogfh/image/upload/v1704702198/%D7%A6%D7%99%D7%9C%D7%95%D7%9D_%D7%9E%D7%A1%D7%9A_2024-01-08_102254_dakgwg.png' />
-            </Link>
-          </li>
-          <li className='m-5'>
-            <Link to="/" className='text-dark'>Home</Link>
-          </li>
-          <li className='m-5'>
-            <Link to="/listResort" className='text-dark'>all resort</Link>
-          </li>
-          <li className='m-5'>
-            <li class="li" id="logout"><Link to="/" className='text-dark' onClick={() => { localStorage.clear() }}>LogOut</Link></li>
-          </li>
-          <li>
-            <Link to="/account" className='text-dark'><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4" />
-            </svg></Link>
-          </li>
-        </ul>
-      </nav>
-      <Outlet />
+    // <div className='bg-danger'>
+    //   <nav className='mb-5'>
+    //     <ul className='d-flex list-unstyled align-items-center'>
+    //       <li className='m-2'>
+    //         <Link to="/" className='text-dark'>
+    //           <img className='w-75' src='https://res.cloudinary.com/dbjxvogfh/image/upload/v1704702198/%D7%A6%D7%99%D7%9C%D7%95%D7%9D_%D7%9E%D7%A1%D7%9A_2024-01-08_102254_dakgwg.png' />
+    //         </Link>
+    //       </li>
+    //       <li className='m-5'>
+    //         <Link to="/" className='text-dark'>Home</Link>
+    //       </li>
+    //       <li className='m-5'>
+    //         <Link to="/listResort" className='text-dark'>all resort</Link>
+    //       </li>
+    //       <li className='m-5'>
+    //         <li class="li" id="logout"><Link to="/" className='text-dark' onClick={() => { localStorage.clear() }}>LogOut</Link></li>
+    //       </li>
+    //       <li>
+    //         <Link to="/account" className='text-dark'><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4" />
+    //         </svg></Link>
+    //       </li>
+    //     </ul>
+    //   </nav>
+    //   <Outlet />
 
-    </div>
+    // </div>
+    // <div className="bg-transparent-white">
+      <nav className="navbar navbar-expand-lg p-0 ">
+        <Link to="/" className="navbar-brand">
+          <img className="w-50 m-0 p-0" src="https://res.cloudinary.com/dbjxvogfh/image/upload/v1704702198/%D7%A6%D7%99%D7%9C%D7%95%D7%9D_%D7%9E%D7%A1%D7%9A_2024-01-08_102254_dakgwg.png" alt="Logo" />
+        </Link>
+        <div className="collapse navbar-collapse">
+          <ul className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <Link to="/" className="nav-link text-dark">Home</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/listResort" className="nav-link text-dark">all resort</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/" className="nav-link text-dark" onClick={() => { localStorage.clear() }}>LogOut</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/account" className="nav-link text-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M12 4a4 4 0 0 1 4 4a4 4 0 0 1-4 4a4 4 0 0 1-4-4a4 4 0 0 1 4-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4" />
+                </svg>
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    // </div>
   )
 }

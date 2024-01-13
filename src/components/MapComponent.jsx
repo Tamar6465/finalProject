@@ -38,7 +38,7 @@ const MapComponent = ({ cities, callResortsByCities }) => {
 
     return (
         <>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '500px', width: '500px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '1500px', width: '500px' }}>
                 <MapContainer center={[31.5, 34.9]} zoom={8} style={{ height: '100%', width: '100%' }}>
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

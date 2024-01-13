@@ -35,7 +35,7 @@ export default function ListResort() {
     }
     const handlePriceFilter = () => {
         if (maxPrice !== '') {
-            
+
             const maxParse = +maxPrice;
             getResortByPrice(maxParse);
         }
@@ -49,12 +49,11 @@ export default function ListResort() {
     };
     resorts;
     return (
-        <div>
+        <div >
             <NavBar />
-
-            <div>
-                <div className='d-flex'>
-                    <div style={{ width: '1000px', margin: '20px' }}>
+            <div className="container d-flex justify-content-between">
+                <div className='search d-flex justify-content-between align-items-center'>
+                    <div className='w-100'>
                         <RangeSlider
                             value={maxPrice}
                             max={2000}
@@ -62,9 +61,9 @@ export default function ListResort() {
                         />
 
                     </div>
-                    <button onClick={handlePriceFilter}>חיפוש לפי מחיר</button>
+                    <button className="btn btn-secondary btn-lg btn-block text-info m-3" onClick={handlePriceFilter}>חיפוש לפי מחיר</button>
                 </div>
-                <div>
+                <div className='search'>
                     <label>קטגוריה:</label>
                     <select value={category} onChange={(e) => setCategory(e.target.value)}>
                         <option value="">בחר קטגוריה</option>
@@ -72,17 +71,24 @@ export default function ListResort() {
                         <option value="b&b">B&B</option>
                         <option value="hotelRoom">חדר במלון</option>
                     </select>
-                    <button onClick={handleCategoryFilter}>חיפוש לפי קטגוריה</button>
+                    <button className="btn btn-secondary btn-lg btn-block text-info m-3" onClick={handleCategoryFilter}>חיפוש לפי קטגוריה</button>
                 </div>
-                <button onClick={() => { getResortByDisabled(userLogin.disabled) }}>סנן לפי הנכות שלי:</button>
+                <div className='search'>
+                    <button className=" btn btn-secondary btn-lg btn-block text-info m-3" onClick={() => { getResortByDisabled(userLogin.disabled) }}>סנן לפי הנכות שלי:</button>
+                </div> </div>
+                <div className=" d-flex justify-content-between align-items-start">
+                <MapComponent cities={cities} callResortsByCities={callResortsByCities} />
+                <div className='row w-75 m-0' >
+                {resorts?.map((resort) => {
+                    return <ResortCard
+                        resort={resort}
+                        key={resort.id}
+                    />
+                })}
             </div>
-            <MapComponent cities={cities} callResortsByCities={callResortsByCities} />
-            {resorts?.map((resort) => {
-                return <ResortCard
-                    resort={resort}
-                    key={resort.id}
-                />
-            })}
+                </div>
+
+            
         </div>
 
 
